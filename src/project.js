@@ -1191,21 +1191,22 @@ function toggleNav() {
   }
 }
 
+const startMainTransitionAnimation = () => {
+  main.classList.add('main-transition-effect');
+  main.addEventListener('transitionend', () => {
+    main.classList.remove('main-transition-effect');
+  }, { once: true });
+};
+
 function openNav() {
   if (minScreenWidth.matches && !isMobile) {
     main.style.marginLeft = '305px';
-    main.classList.add('main-transition-effect');
-    main.addEventListener('transitionend', () => {
-      main.classList.remove('main-transition-effect');
-    }, { once: true });
+    startMainTransitionAnimation();
     mainOverlay.style.opacity = '0';
     mainOverlay.style.pointerEvents = 'none';
   } else {
     main.style.marginLeft = '0px';
-    main.classList.add('main-transition-effect-2');
-    main.addEventListener('transitionend', () => {
-      main.classList.remove('main-transition-effect-2');
-    }, { once: true });
+    startMainTransitionAnimation();
     mainOverlay.style.opacity = '1';
     mainOverlay.style.pointerEvents = 'all';
   }
@@ -1221,10 +1222,7 @@ function closeNav() {
   main.style.marginLeft = '0px';
   mainOverlay.style.opacity = '0';
   mainOverlay.style.pointerEvents = 'none';
-  main.classList.add('main-transition-effect-2');
-  main.addEventListener('transitionend', () => {
-    main.classList.remove('main-transition-effect-2');
-  }, { once: true });
+  startMainTransitionAnimation();
 }
 
 document.addEventListener('click', (event) => {

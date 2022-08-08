@@ -275,3 +275,9 @@ export function loadAllProjectsSectionsDropdownElements(
     });
   });
 }
+
+export function resetAnimation(el) {
+  el.style.animation = 'none';
+  el.offsetHeight; /* trigger reflow */
+  el.style.animation = null;
+}

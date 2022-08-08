@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import flatpickr from 'flatpickr';
+import { reject } from 'lodash';
 import {
   toDoProjects,
   projectCreate,
@@ -30,6 +31,7 @@ import {
   updateOverdueTasksElementsIndixes,
   deleteTodayTaskElement,
   deleteOverdueTaskElement,
+  resetAnimation,
 } from './utilities';
 import { virtualKeyboard } from './virtualKeyboard';
 import { closeModals } from './modals';
@@ -90,36 +92,52 @@ function updateTaskBoxInputs(taskBox, projectIndex) {
   initializeSelectProjectSectionDropdown();
 }
 
-function updateTaskBox(mutationList) {
-  mutationList.forEach((mutation) => {
-    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-      const taskBox = mutation.target;
+const resetTaskbox = new Event('resetTaskbox');
 
-      const projectIndex = document.querySelector('.main-content.enabled')
-        .dataset.project;
-      const delay = isMobile ? 400 : 0;
+async function updateTaskBox() {
+  const taskBox = this;
+  let delayIsOver;
 
-      setTimeout(() => {
-        updateTaskBoxInputs(taskBox, projectIndex);
-      }, delay);
-    }
+  const start = () => new Promise((resolve) => {
+    (function checkIfDelayIsOver() {
+      if (!delayIsOver) {
+        setTimeout(() => {
+          if (delayIsOver) {
+            resolve();
+          } else {
+            checkIfDelayIsOver();
+          }
+        }, 150);
+      }
+    }());
   });
+
+  if (taskBox.classList.contains('main')) {
+    setTimeout(() => {
+      delayIsOver = true;
+    }, 750);
+  } else {
+    delayIsOver = true;
+  }
+
+  await start;
+
+  const projectIndex = document.querySelector('.main-content.enabled')
+    .dataset.project;
+  const delay = isMobile ? 400 : 0;
+
+  setTimeout(() => {
+    updateTaskBoxInputs(taskBox, projectIndex);
+  }, delay);
 }
 
 const options = {
   attributes: true,
 };
-const taskBoxObsever = new MutationObserver(updateTaskBox);
-taskBoxObsever;
 
 const mainAddTaskBoxContainer = document.querySelector(
   '.add-task-box-container.main',
 );
-const mainAddTaskBoxContainerWrapper = document.querySelector(
-  '.add-task-box-container-wrapper',
-);
-
-taskBoxObsever.observe(mainAddTaskBoxContainer, options);
 
 function updateDueDate(scheduleInput, dueDateSelector, selectedDueDate) {
   if (scheduleInput.value) {
@@ -519,7 +537,8 @@ document.addEventListener('click', (event) => {
 
     const addTaskButtons = document.querySelectorAll('.add-task');
     addTaskButtons.forEach((button) => {
-      button.style.display = 'none';
+      resetAnimation(button);
+      button.classList.add('disappearing');
     });
 
     const addTaskContainer = sectionContent.querySelector(
@@ -531,7 +550,6 @@ document.addEventListener('click', (event) => {
     const taskBoxContainer = addTaskContainer.querySelector(
       '.add-task-box-container',
     );
-    taskBoxObsever.observe(taskBoxContainer, options);
 
     const selectProjectDropdown = addTaskContainer.querySelector(
       '.select-project-section-dropdown-content ul',
@@ -555,11 +573,6 @@ document.addEventListener('click', (event) => {
     const taskBoxContainer = event.target.closest('.task-box-c');
     const taskActionButton = event.target;
 
-    const addTaskButtons = document.querySelectorAll('.add-task');
-    addTaskButtons.forEach((button) => {
-      button.style.display = 'flex';
-    });
-
     if (taskActionButton.closest('.edit-task-box-container')) {
       const editTaskBoxContainer = taskActionButton.closest(
         '.edit-task-box-container',
@@ -568,7 +581,23 @@ document.addEventListener('click', (event) => {
       taskItem.style.display = 'list-item';
     }
 
-    taskBoxContainer.remove();
+    taskBoxContainer.classList.add('disappearing');
+    setTimeout(() => {
+      taskBoxContainer.remove();
+
+      const addTaskButtons = document.querySelectorAll('.add-task');
+      addTaskButtons.forEach((button) => {
+        button.classList.remove('disappearing');
+        resetAnimation(button);
+        button.classList.add('appearing');
+      });
+
+      setTimeout(() => {
+        addTaskButtons.forEach((button) => {
+          button.classList.remove('appearing');
+        });
+      }, 265);
+    }, 255);
   }
 });
 
@@ -907,6 +936,11 @@ export function addTaskBoxEventListeners() {
       scheduleInput.value = dateValue;
       updateDueDate(scheduleInput, dueDateSelector, selectedDueDate);
     }
+  })();
+
+  const initializeTaskBox = (() => {
+    taskBoxContainer.addEventListener('resetTaskbox', updateTaskBox, false);
+    taskBoxContainer.dispatchEvent(resetTaskbox);
   })();
 }
 
@@ -1560,6 +1594,7 @@ document.addEventListener('click', (event) => {
       }
 
       const addTaskContainer = event.target.closest('.add-task-box-container');
+      const taskBox = addTaskContainer.querySelector('.task-box');
       const selectedPriorityButton = addTaskContainer.querySelector('.selected-priority');
       const selectedSectionButton = addTaskContainer.querySelector(
         '.selected-project-section',
@@ -1633,11 +1668,18 @@ document.addEventListener('click', (event) => {
           '--taskHeight',
           `${DOMTaskElement.offsetHeight}px`,
         );
+        resetAnimation(addTaskContainer);
+        resetAnimation(taskBox);
+        taskBox.classList.add('long-box-shadow-effect');
         DOMTaskElement.classList.add('appearing');
         setTimeout(() => {
           DOMTaskElement.classList.remove('appearing');
         }, 335);
-        addTaskContainer.classList.add('reset');
+        setTimeout(() => {
+          taskBox.classList.remove('long-box-shadow-effect');
+        }, 750);
+        addTaskContainer.dispatchEvent(resetTaskbox);
+
         updateProjectTasksNumber(projectIndex);
 
         if (todayID !== '') {
