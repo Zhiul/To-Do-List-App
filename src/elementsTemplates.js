@@ -367,7 +367,7 @@ export function editTaskBoxTemplate(projectIndex, sectionIndex, taskIndex) {
       <form class="edit-task-box-container task-box-c" data-project="${projectIndex}" data-section="${sectionIndex}" data-task-index="${taskIndex}" autocomplete="off">
                               <div class="edit-task-box task-box">
                                   <div class="task-inputs">
-                                  <textarea name="task-title" rows="1" cols="30" class="task-input task-title" placeholder="Task name" maxlength="500"></textarea>
+                                  <textarea name="task-title" rows="1" cols="30" class="task-input task-title" placeholder="Task name" maxlength="500">${title}</textarea>
                                   
                                   <textarea name="edit-task-description" cols="30" class="textarea-task-description task-input" placeholder='Description' maxlength='16384'>${description}</textarea>
                                   </div>

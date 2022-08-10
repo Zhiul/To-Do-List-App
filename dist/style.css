@@ -683,23 +683,12 @@ main {
   position: relative;
   transform-origin: top left;
   position: relative;
+  will-change: margin-left, transform;
 }
 
-.main-transition-overlay{
-  content: "";
-  display: block;
-  width: 100vw;
-  height: 100%;
-  transition: opacity 200ms ease-in-out;
-  background-color: #ffffff61;
-  position: fixed;
-  top: 44px;
-  left: 0px;
-  z-index: 4;
-  opacity: 0;
-  will-change: opacity;
-  pointer-events: none;
-  box-shadow: inset 0px -14px 44px 21px #c4c4c4;
+.sidebar.closed ~ main{
+  transition: margin-left 0.24s cubic-bezier(.26,-0.04,.59,1), width 0.24s cubic-bezier(.26,-0.04,.59,1);
+  height: calc(100vh - 44px);
 }
 
 @keyframes main-transition-effect {
@@ -713,6 +702,24 @@ main {
 
   30%{
     transform: scale(1.018);
+  }
+
+  100%{
+    transform: scale(1);
+  }
+}
+
+@keyframes main-transition-effect-2 {
+  0%{
+    transform: scale(1);
+  }
+
+  20%{
+    transform: scale(0.975);
+  }
+
+  30%{
+    transform: scale(0.985);
   }
 
   100%{
@@ -807,16 +814,18 @@ main.main-transition-effect ~ .main-transition-overlay{
 }
 
 .empty-state {
-  transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+  transition: opacity 150ms ease-in-out, transform 150ms ease-in-out, max-height 150ms ease-in-out;
   opacity: 0;
   pointer-events: none;
   transform: translateY(40px) scale(0.8);
+  max-height: 0px;
 }
 
 .empty-state.active {
   opacity: 1;
   pointer-events: all;
   transform: translateY(0px) scale(1);
+  max-height: 180px;
 }
 
 .empty-state-content {
@@ -1637,20 +1646,30 @@ button.project-comments {
 
 .add-task.disappearing{
   transform-origin: top left;
-  animation: addTaskButtonAppearing 250ms ease-in-out reverse forwards;
+  animation: addTaskButtonDisappearing 550ms ease-in-out forwards;
 }
 
 @keyframes addTaskButtonAppearing {
   0%{
     opacity: 0;
     transform: translate(-10px, -5px) scale(0.6);
-    max-height: 0px;
   }
 
   100%{
     opacity: 1;
     transform: translate(0px, 0px) scale(1);
-    max-height: 23px;
+  }
+}
+
+@keyframes addTaskButtonDisappearing {
+  0%{
+    opacity: 1;
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  100%{
+    opacity: 0;
+    transform: scale(0.6);
   }
 }
 
@@ -1673,16 +1692,16 @@ button.project-comments {
   transition: 120ms ease-in-out;
 }
 
-.no-touch .add-task:hover {
+.no-touch .add-task:hover, .add-task.disappearing {
   color: #dd4b39;
 }
 
-.no-touch .add-task:hover .add-icon {
+.no-touch .add-task:hover .add-icon, .add-task.disappearing .add-icon {
   background-color: #dd4b39;
   box-shadow: 0px 0px 3px 3px #ffdedb;
 }
 
-.no-touch .add-task:hover .add-task-text{
+.no-touch .add-task:hover .add-task-text, .add-task.disappearing .add-task-text{
   filter: drop-shadow(0px 0px 2px #fc826d);
   transform: scale(1.02);
 }
@@ -1691,11 +1710,11 @@ button.project-comments {
   transition: filter 300ms ease-in-out;
 }
 
-.no-touch .add-task:hover svg{
+.no-touch .add-task:hover svg, .add-task.disappearing svg{
   stroke: white;
 }
 
-.no-touch .add-task:hover svg path {
+.no-touch .add-task:hover svg path, .add-task.disappearing svg path {
   fill: white;
 }
 
@@ -1705,7 +1724,7 @@ button.project-comments {
 
 @keyframes taskBoxContainerAppearing{
   from{
-    max-height: 0px;
+    max-height: 75px;
     opacity: 0.48;
     transform: scaleX(0.7) scaleY(0.6);
   }
@@ -1825,8 +1844,65 @@ button.project-comments {
   transform: translateX(-14px);
 }
 
+@keyframes editTaskBoxAppearing {
+  0%{
+    filter: blur(1.5px);
+    overflow: hidden;
+    opacity: 0;
+    max-height: 0px;
+  }
+
+  70%{
+    max-height: 370px;
+    overflow: hidden;
+  }
+
+  100%{
+    max-height: 370px;
+    opacity: 1;
+    filter: blur(0px);
+    overflow: hidden;
+  }
+}
+
+@keyframes editTaskBoxDisappearing {
+
+  0%{
+    transform: scaleX(1) scaleY(1);
+    max-height: 370px;
+    opacity: 1;
+    filter: blur(1.5px);
+    margin-bottom: 18px;
+  }
+
+  60%{
+    opacity: 0;
+    max-height: 0px;
+  }
+
+  100%{
+    transform: scaleX(0.6) scaleY(0.5);
+    filter: blur(1.5px);
+    opacity: 0;
+    max-height: 0px;
+    margin-bottom: 0px;
+  }
+}
+
 .edit-task-box-container {
   margin-bottom: 18px;
+  transform-origin: top left;
+  animation: editTaskBoxAppearing 700ms ease-in-out;
+}
+
+.edit-task-box-container.appearing{
+  animation: editTaskBoxAppearing 700ms ease-in-out;
+}
+
+.edit-task-box-container.disappearing{
+  overflow: hidden;
+  will-change: transform, filter, opacity, max-height, margin-bottom;
+  animation: editTaskBoxDisappearing 700ms ease-in-out forwards;
 }
 
 .task-box {

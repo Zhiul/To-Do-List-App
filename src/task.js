@@ -43,7 +43,7 @@ const { DateTime } = require('luxon');
 function updateTaskBoxInputs(taskBox, projectIndex) {
   const initializeInputs = (() => {
     const addTaskTitleInput = taskBox.querySelector('.task-title');
-    const taskDescriptionInput = taskBox.querySelector('.add-task-description');
+    const taskDescriptionInput = taskBox.querySelector('.textarea-task-description');
 
     addTaskTitleInput.value = '';
     changeTextareaHeightOnInput.call(addTaskTitleInput);
@@ -87,7 +87,7 @@ function updateTaskBoxInputs(taskBox, projectIndex) {
     }
   })();
 
-  const addTaskButton = taskBox.querySelector('.add-todo');
+  const addTaskButton = taskBox.querySelector('.action-todo');
   addTaskButton.classList.remove('enabled');
   initializeSelectProjectSectionDropdown();
 }
@@ -537,7 +537,6 @@ document.addEventListener('click', (event) => {
 
     const addTaskButtons = document.querySelectorAll('.add-task');
     addTaskButtons.forEach((button) => {
-      resetAnimation(button);
       button.classList.add('disappearing');
     });
 
@@ -571,33 +570,50 @@ document.addEventListener('click', (event) => {
     || event.target.matches('.edit-task-box-container .cancel-task')
   ) {
     const taskBoxContainer = event.target.closest('.task-box-c');
-    const taskActionButton = event.target;
+    const taskBoxType = taskBoxContainer.classList.contains('add-task-box-container') ? 'add-taskbox' : 'edit-taskbox';
+    let delay;
 
-    if (taskActionButton.closest('.edit-task-box-container')) {
-      const editTaskBoxContainer = taskActionButton.closest(
-        '.edit-task-box-container',
-      );
-      const taskItem = editTaskBoxContainer.previousElementSibling;
-      taskItem.style.display = 'list-item';
+    resetAnimation(taskBoxContainer);
+    taskBoxContainer.classList.add('disappearing');
+
+    if (taskBoxType === 'add-taskbox') {
+      delay = 255;
+    } else {
+      delay = 705;
     }
 
-    taskBoxContainer.classList.add('disappearing');
     setTimeout(() => {
+      if (taskBoxType === 'edit-taskbox') {
+        const taskItem = taskBoxContainer.previousElementSibling;
+        taskBoxContainer.remove();
+        taskItem.style.display = '';
+        taskItem.style.willChange = 'transform, opacity, max-height, padding';
+        taskItem.classList.add('appearing');
+
+        setTimeout(() => {
+          taskItem.style.willChange = '';
+          taskItem.classList.remove('appearing');
+        }, 340);
+        return;
+      }
+
       taskBoxContainer.remove();
 
-      const addTaskButtons = document.querySelectorAll('.add-task');
-      addTaskButtons.forEach((button) => {
-        button.classList.remove('disappearing');
-        resetAnimation(button);
-        button.classList.add('appearing');
-      });
-
-      setTimeout(() => {
+      const makeAddTaskButtonsAppear = (() => {
+        const addTaskButtons = document.querySelectorAll('.add-task');
         addTaskButtons.forEach((button) => {
-          button.classList.remove('appearing');
+          button.classList.remove('disappearing');
+          resetAnimation(button);
+          button.classList.add('appearing');
         });
-      }, 265);
-    }, 255);
+
+        setTimeout(() => {
+          addTaskButtons.forEach((button) => {
+            button.classList.remove('appearing');
+          });
+        }, 265);
+      })();
+    }, delay);
   }
 });
 
@@ -939,6 +955,7 @@ export function addTaskBoxEventListeners() {
   })();
 
   const initializeTaskBox = (() => {
+    if (taskBoxContainer.classList.contains('edit-task-box-container')) return;
     taskBoxContainer.addEventListener('resetTaskbox', updateTaskBox, false);
     taskBoxContainer.dispatchEvent(resetTaskbox);
   })();
@@ -984,9 +1001,10 @@ document.addEventListener('click', (event) => {
     let taskIndex = parseInt(
       editTaskButton.closest('[data-task-index]').dataset.taskIndex,
     );
-    const { priority } = toDoProjects.projects[projectIndex].sections[sectionIndex].tasks[
-      taskIndex
-    ];
+
+    let task = toDoProjects.projects[projectIndex].sections[sectionIndex].tasks[taskIndex];
+
+    const oldPriority = task.priority;
 
     let todayID = '';
     let previousTodayID;
@@ -1020,7 +1038,7 @@ document.addEventListener('click', (event) => {
       '.edit-task-box-container',
     );
     const selectPriorityButton = editTaskContainer.querySelector(
-      `.priority-item[data-priority="${priority}"]`,
+      `.priority-item[data-priority="${oldPriority}"]`,
     );
     selectPriorityButton.click();
 
@@ -1040,12 +1058,11 @@ document.addEventListener('click', (event) => {
       '.edit-task-box-container .selected-project-section',
     );
 
-    let task;
     let title;
     let description;
     let dueDateValue;
     let dueDate;
-    let newPriority;
+    let priority;
     let index;
 
     let selectedProjectIndex;
@@ -1083,36 +1100,30 @@ document.addEventListener('click', (event) => {
         dueDate = '';
       }
 
-      newPriority = parseInt(
+      priority = parseInt(
         editTaskContainer.querySelector('.selected-priority').dataset.priority,
       );
 
-      toDoProjects.projects[projectIndex].sections[sectionIndex].tasks[
-        taskIndex
-      ].title = title;
-      toDoProjects.projects[projectIndex].sections[sectionIndex].tasks[
-        taskIndex
-      ].description = description;
-      toDoProjects.projects[projectIndex].sections[sectionIndex].tasks[
-        taskIndex
-      ].dueDate = dueDate;
-      toDoProjects.projects[projectIndex].sections[sectionIndex].tasks[
-        taskIndex
-      ].priority = newPriority;
-      toDoProjects.projects[projectIndex].sections[sectionIndex].tasks[
-        taskIndex
-      ].dueDateTimeZone = DateTime.local().zoneName;
+      task = {
+        ...task, title, description, dueDate, priority,
+      };
+      task.dueDateTimeZone = DateTime.local().zoneName;
 
       selectedProjectIndex = parseInt(selectedSectionButton.dataset.project);
       selectedSectionIndex = parseInt(selectedSectionButton.dataset.section);
 
-      task = toDoProjects.projects[projectIndex].sections[sectionIndex].tasks
-        .splice(taskIndex, 1)
-        .pop();
+      toDoProjects.projects[projectIndex].sections[sectionIndex].tasks
+        .splice(taskIndex, 1);
 
-      toDoProjects.projects[selectedProjectIndex].sections[
-        selectedSectionIndex
-      ].tasks.push(task);
+      if (projectIndex !== selectedProjectIndex || sectionIndex !== selectedSectionIndex) {
+        toDoProjects.projects[selectedProjectIndex].sections[
+          selectedSectionIndex
+        ].tasks.push(task);
+      } else {
+        toDoProjects.projects[selectedProjectIndex].sections[
+          selectedSectionIndex
+        ].tasks.splice(taskIndex, 0, task);
+      }
 
       index = toDoProjects.projects[selectedProjectIndex].sections[
         selectedSectionIndex
@@ -1212,6 +1223,18 @@ document.addEventListener('click', (event) => {
         }
       }
 
+      const editedTaskElement = document.querySelector(
+        `.main-content[data-project="${selectedProjectIndex}"] [data-section="${selectedSectionIndex}"] [data-task-index="${
+          index}"]`,
+      );
+
+      editedTaskElement.style.willChange = 'transform, opacity, max-height, padding';
+      editedTaskElement.classList.add('appearing');
+      setTimeout(() => {
+        editedTaskElement.style.willChange = '';
+        editedTaskElement.classList.remove('appearing');
+      }, 340);
+
       if (todayID !== '') {
         const taskTemplate = createTaskTemplate(task, index);
         if (todayID === 0) {
@@ -1246,7 +1269,11 @@ document.addEventListener('click', (event) => {
         }
       }
 
-      editTaskContainer.remove();
+      editTaskContainer.classList.add('disappearing');
+
+      setTimeout(() => {
+        editTaskContainer.remove();
+      }, 740);
       updateProjectTasksNumber(projectIndex);
       updateProjectTasksNumber(selectedProjectIndex);
       updateProjectTasksNumber('today');
@@ -1564,6 +1591,7 @@ document.addEventListener('click', (event) => {
               );
               previusTask.insertAdjacentHTML('afterend', taskTemplate);
             }
+
             toggleShowTodaySections();
             updateProjectTasksNumber('today');
           }

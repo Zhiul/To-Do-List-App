@@ -1191,22 +1191,23 @@ function toggleNav() {
   }
 }
 
-const startMainTransitionAnimation = () => {
-  main.classList.add('main-transition-effect');
+const startMainTransitionAnimation = (num) => {
+  const animation = num === 1 ? 'main-transition-effect' : `main-transition-effect-${num}`;
+  main.classList.add(animation);
   main.addEventListener('transitionend', () => {
-    main.classList.remove('main-transition-effect');
+    main.classList.remove(animation);
   }, { once: true });
 };
 
 function openNav() {
   if (minScreenWidth.matches && !isMobile) {
     main.style.marginLeft = '305px';
-    startMainTransitionAnimation();
+    startMainTransitionAnimation(1);
     mainOverlay.style.opacity = '0';
     mainOverlay.style.pointerEvents = 'none';
   } else {
     main.style.marginLeft = '0px';
-    startMainTransitionAnimation();
+    startMainTransitionAnimation(1);
     mainOverlay.style.opacity = '1';
     mainOverlay.style.pointerEvents = 'all';
   }
@@ -1222,7 +1223,7 @@ function closeNav() {
   main.style.marginLeft = '0px';
   mainOverlay.style.opacity = '0';
   mainOverlay.style.pointerEvents = 'none';
-  startMainTransitionAnimation();
+  startMainTransitionAnimation(2);
 }
 
 document.addEventListener('click', (event) => {

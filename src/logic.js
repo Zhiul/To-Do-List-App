@@ -146,3 +146,7 @@ export function getNewOverdueTaskID(task) {
 export function saveToDoProjects() {
   localStorage.setItem('toDoProjects', JSON.stringify(toDoProjects));
 }
+
+setTimeout(() => {
+  window.a = toDoProjects;
+}, 500);
