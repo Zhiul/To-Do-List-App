@@ -3002,6 +3002,22 @@ span.flatpickr-weekday {
   animation: appearingFromCenter 335ms ease-in-out forwards;
 }
 
+@keyframes transitioningMarginBottom {
+  from{
+    margin-bottom: 0px;
+  }
+
+  to{
+    margin-bottom: 16px;
+  }
+}
+
+.task-item.appearing-with-delay{
+  max-height: 0px;
+  overflow: hidden;
+  animation: appearingFromCenter 335ms ease-in-out 100ms forwards, transitioningMarginBottom 335ms ease-in-out forwards;
+}
+
 .task-item.disappearing{
   opacity: 0;
   animation: disappearingToCenter 340ms ease-in-out forwards;
