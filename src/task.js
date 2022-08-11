@@ -587,13 +587,14 @@ document.addEventListener('click', (event) => {
         const taskItem = taskBoxContainer.previousElementSibling;
         taskBoxContainer.remove();
         taskItem.style.display = '';
+
         taskItem.style.willChange = 'transform, opacity, max-height, padding';
-        taskItem.classList.add('appearing');
+        taskItem.classList.add('appearing-with-delay');
 
         setTimeout(() => {
           taskItem.style.willChange = '';
-          taskItem.classList.remove('appearing');
-        }, 340);
+          taskItem.classList.remove('appearing-with-delay');
+        }, 440);
         return;
       }
 
