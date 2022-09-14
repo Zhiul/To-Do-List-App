@@ -1,6 +1,5 @@
 import { format } from 'date-fns';
 import flatpickr from 'flatpickr';
-import { reject } from 'lodash';
 import {
   toDoProjects,
   projectCreate,

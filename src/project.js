@@ -1,4 +1,4 @@
-import { toDoProjects, projectCreate, saveToDoProjects } from './logic';
+import { toDoProjects, projectCreate, saveToDoProjects } from "./logic";
 import {
   createElementFromTemplate,
   createProjectTemplate,
@@ -7,23 +7,32 @@ import {
   createProjectSectionDropdownElementTemplate,
   addSectionBoxTemplate,
   editSectionBoxTemplate,
-} from './elementsTemplates';
-import { closeModals } from './modals';
+} from "./elementsTemplates";
+import { closeModals } from "./modals";
 import {
   main,
   saveTaskBoxTask,
   enableElementScroll,
   disableElementScroll,
   toggleEmptyState,
-} from './utilities';
-import { isMobile } from './mobile';
+} from "./utilities";
+import { isMobile } from "./mobile";
 
-const editProjectForm = document.querySelector('.edit-project-form');
-const editProjectNameInput = editProjectForm.querySelector('.project-name');
-const editProjectColorButton = editProjectForm.querySelector('.project-color');
-const editProjectButton = document.querySelector('#edit-project-button');
+function setCSSVWVariable() {
+  const root = document.documentElement;
+  root.style.setProperty("--vw", window.innerWidth / 100);
+}
 
-editProjectButton.addEventListener('click', editProject);
+setCSSVWVariable();
+
+window.addEventListener("resize", setCSSVWVariable);
+
+const editProjectForm = document.querySelector(".edit-project-form");
+const editProjectNameInput = editProjectForm.querySelector(".project-name");
+const editProjectColorButton = editProjectForm.querySelector(".project-color");
+const editProjectButton = document.querySelector("#edit-project-button");
+
+editProjectButton.addEventListener("click", editProject);
 
 function editProject() {
   const projectIndex = parseInt(editProjectForm.dataset.project);
@@ -32,32 +41,32 @@ function editProject() {
     toDoProjects.projects[projectIndex].title = editProjectNameInput.value;
 
     const validColors = [
-      'berry-red',
-      'red',
-      'orange',
-      'yellow',
-      'olive-green',
-      'lime-green',
-      'green',
-      'mint-green',
-      'teal',
-      'sky-blue',
-      'light-blue',
-      'blue',
-      'grape',
-      'violet',
-      'lavender',
-      'magenta',
-      'salmon',
-      'charcoal',
-      'gray',
-      'taupe',
+      "berry-red",
+      "red",
+      "orange",
+      "yellow",
+      "olive-green",
+      "lime-green",
+      "green",
+      "mint-green",
+      "teal",
+      "sky-blue",
+      "light-blue",
+      "blue",
+      "grape",
+      "violet",
+      "lavender",
+      "magenta",
+      "salmon",
+      "charcoal",
+      "gray",
+      "taupe",
     ];
 
     let { color } = editProjectColorButton.dataset;
 
     if (validColors.includes(color) === false) {
-      color = 'charcoal';
+      color = "charcoal";
     }
 
     toDoProjects.projects[projectIndex].color = color;
@@ -68,7 +77,7 @@ function editProject() {
   function editProjectElement(projectIndex) {
     const projectTitle = toDoProjects.projects[projectIndex].title;
     const projectTitles = document.querySelectorAll(
-      `.main-content[data-project="${projectIndex}"] .main-title, [data-project="${projectIndex}"] .project-item-title`,
+      `.main-content[data-project="${projectIndex}"] .main-title, [data-project="${projectIndex}"] .project-item-title`
     );
     projectTitles.forEach((title) => {
       title.textContent = projectTitle;
@@ -76,7 +85,7 @@ function editProject() {
 
     const projectCircleColor = toDoProjects.projects[projectIndex].color;
     const projectCirclesElements = document.querySelectorAll(
-      `[data-project="${projectIndex}"]:not(.edit-project-form) .circle`,
+      `[data-project="${projectIndex}"]:not(.edit-project-form) .circle`
     );
 
     projectCirclesElements.forEach((projectCircle) => {
@@ -90,22 +99,22 @@ function editProject() {
   closeModals();
 }
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.project-option.edit-project')) {
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".project-option.edit-project")) {
     const editProjectButton = event.target;
     let projectIndex;
 
     const editProjectTitleInput = document.querySelector(
-      '.edit-project-modal .project-name',
+      ".edit-project-modal .project-name"
     );
     editProjectTitleInput.focus();
 
-    if (document.querySelector('.project-item.active')) {
-      const projectItem = document.querySelector('.project-item.active');
+    if (document.querySelector(".project-item.active")) {
+      const projectItem = document.querySelector(".project-item.active");
       projectIndex = parseInt(projectItem.dataset.project);
     } else {
       projectIndex = parseInt(
-        document.querySelector('.main-content.enabled').dataset.project,
+        document.querySelector(".main-content.enabled").dataset.project
       );
     }
 
@@ -120,98 +129,105 @@ document.addEventListener('click', (event) => {
 
         const projectColor = toDoProjects.projects[projectIndex].color;
         const editProjectColorDropdown = editProjectForm.querySelector(
-          '.project-color-dropdown-content',
+          ".project-color-dropdown-content"
         );
         const projectColorItem = editProjectColorDropdown
           .querySelector(`.${projectColor}`)
-          .closest('.project-color-item');
+          .closest(".project-color-item");
         projectColorItem.click();
       })();
     }
   }
 });
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.project-section-item')) {
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".project-section-item")) {
     event.preventDefault();
     const projectSectionDropdownElement = event.target;
-    const selectProjectSectionDropdownElementContainer = projectSectionDropdownElement.closest('.select-project-section');
+    const selectProjectSectionDropdownElementContainer =
+      projectSectionDropdownElement.closest(".select-project-section");
     const projectIndex = parseInt(
-      projectSectionDropdownElement.dataset.project,
+      projectSectionDropdownElement.dataset.project
     );
     const sectionIndex = parseInt(
-      projectSectionDropdownElement.dataset.section,
+      projectSectionDropdownElement.dataset.section
     );
 
-    const selectedProjectButton = selectProjectSectionDropdownElementContainer.querySelector(
-      '.selected-project-section',
-    );
+    const selectedProjectButton =
+      selectProjectSectionDropdownElementContainer.querySelector(
+        ".selected-project-section"
+      );
     selectedProjectButton.dataset.project = projectIndex;
     selectedProjectButton.dataset.section = sectionIndex;
 
-    const projectFirstSectionDropdownElement = selectProjectSectionDropdownElementContainer.querySelector(
-      `.project-section-item[data-project="${projectIndex}"][data-section="0"]`,
-    );
+    const projectFirstSectionDropdownElement =
+      selectProjectSectionDropdownElementContainer.querySelector(
+        `.project-section-item[data-project="${projectIndex}"][data-section="0"]`
+      );
 
-    const projectIconContent = projectFirstSectionDropdownElement.querySelector(
-      '.project-item-icon',
-    ).innerHTML;
-    const selectedProjectButtonIcon = selectedProjectButton.querySelector('.project-item-icon');
+    const projectIconContent =
+      projectFirstSectionDropdownElement.querySelector(
+        ".project-item-icon"
+      ).innerHTML;
+    const selectedProjectButtonIcon =
+      selectedProjectButton.querySelector(".project-item-icon");
     selectedProjectButtonIcon.innerHTML = projectIconContent;
 
     const changeSelectedProjectSectionTitle = (() => {
       const projectSectionTitle = projectSectionDropdownElement.querySelector(
-        '.project-item-title',
+        ".project-item-title"
       ).textContent;
 
       const selectedProjectButtonTitle = selectedProjectButton.querySelector(
-        '.project-item-title',
+        ".project-item-title"
       );
-      const selectedProjectButtonSectionTitle = selectedProjectButton.querySelector('.project-item-section-title');
+      const selectedProjectButtonSectionTitle =
+        selectedProjectButton.querySelector(".project-item-section-title");
 
       const projectTitle = toDoProjects.projects[projectIndex].title;
       selectedProjectButtonTitle.textContent = projectTitle;
 
       if (sectionIndex === 0) {
-        selectedProjectButtonSectionTitle.textContent = '';
+        selectedProjectButtonSectionTitle.textContent = "";
       } else {
         selectedProjectButtonSectionTitle.textContent = ` / ${projectSectionTitle}`;
       }
 
-      selectedProjectButton.classList.add('selected');
+      selectedProjectButton.classList.add("selected");
       setTimeout(() => {
-        selectedProjectButton.classList.remove('selected');
+        selectedProjectButton.classList.remove("selected");
       }, 180);
     })();
 
     const enableCheckmark = (() => {
-      const projectSectionDropdownElements = selectProjectSectionDropdownElementContainer.querySelectorAll(
-        '.project-section-item',
-      );
+      const projectSectionDropdownElements =
+        selectProjectSectionDropdownElementContainer.querySelectorAll(
+          ".project-section-item"
+        );
       projectSectionDropdownElements.forEach((item) => {
-        item.classList.remove('selected');
+        item.classList.remove("selected");
       });
 
-      projectFirstSectionDropdownElement.classList.add('selected');
-      projectSectionDropdownElement.classList.add('selected');
+      projectFirstSectionDropdownElement.classList.add("selected");
+      projectSectionDropdownElement.classList.add("selected");
     })();
   }
 });
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.project-options')) {
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".project-options")) {
     const projectOptionsButton = event.target;
-    projectOptionsButton.classList.toggle('active');
+    projectOptionsButton.classList.toggle("active");
     const dropdown = projectOptionsButton.nextElementSibling;
-    dropdown.style.willChange = 'transform, opacity';
-    dropdown.addEventListener('animationend', () => {
+    dropdown.style.willChange = "transform, opacity";
+    dropdown.addEventListener("animationend", () => {
       dropdown.style.willChange = null;
     });
 
     const toggleDropdown = (() => {
       setTimeout(() => {
-        dropdown.classList.toggle('show');
-        if (dropdown.classList.contains('show')) {
+        dropdown.classList.toggle("show");
+        if (dropdown.classList.contains("show")) {
           disableElementScroll(main);
         } else {
           enableElementScroll(main);
@@ -221,52 +237,52 @@ document.addEventListener('click', (event) => {
   }
 });
 
-document.addEventListener('click', (event) => {
-  if (!event.target.matches('.project-options')) {
-    if (document.querySelector('.project-options-dropdown-content.show')) {
+document.addEventListener("click", (event) => {
+  if (!event.target.matches(".project-options")) {
+    if (document.querySelector(".project-options-dropdown-content.show")) {
       const projectOptionsButton = document.querySelector(
-        '.project-options.active',
+        ".project-options.active"
       );
-      projectOptionsButton.classList.remove('active');
+      projectOptionsButton.classList.remove("active");
       const dropdown = document.querySelector(
-        '.project-options-dropdown-content.show',
+        ".project-options-dropdown-content.show"
       );
-      dropdown.classList.toggle('show');
-      if (document.querySelector('.dropdown.show') === null) {
+      dropdown.classList.toggle("show");
+      if (document.querySelector(".dropdown.show") === null) {
         enableElementScroll(main);
       }
     }
   }
 });
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.toggle-completed-tasks')) {
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".toggle-completed-tasks")) {
     const toggleCompletedTasksButton = event.target;
     const sectionsCompletedTasksContainers = document.querySelectorAll(
-      '.main-content.enabled .completed-tasks-items',
+      ".main-content.enabled .completed-tasks-items"
     );
 
-    if (toggleCompletedTasksButton.classList.contains('hide')) {
+    if (toggleCompletedTasksButton.classList.contains("hide")) {
       setTimeout(() => {
-        toggleCompletedTasksButton.classList.toggle('hide');
+        toggleCompletedTasksButton.classList.toggle("hide");
       }, 100);
 
       sectionsCompletedTasksContainers.forEach((container) => {
-        container.classList.remove('active');
-        container.classList.add('disabled');
+        container.classList.remove("active");
+        container.classList.add("disabled");
         container.style.maxHeight = `${container.scrollHeight}px`;
       });
     } else {
       setTimeout(() => {
-        toggleCompletedTasksButton.classList.toggle('hide');
+        toggleCompletedTasksButton.classList.toggle("hide");
       }, 100);
 
       sectionsCompletedTasksContainers.forEach((container) => {
-        container.classList.remove('disabled');
-        container.classList.add('active');
+        container.classList.remove("disabled");
+        container.classList.add("active");
       });
     }
-    const projectIndex = document.querySelector('.main-content.enabled').dataset
+    const projectIndex = document.querySelector(".main-content.enabled").dataset
       .project;
     toggleEmptyState(projectIndex);
   }
@@ -274,12 +290,13 @@ document.addEventListener('click', (event) => {
 
 const changeSidebarProjectOptionsDropdown = new ResizeObserver((entries) => {
   const dropdown = document.querySelector(
-    '.sidebar-project-options-dropdown-content.show',
+    ".sidebar-project-options-dropdown-content.show"
   );
 
   entries.forEach((entry) => {
-    const actualPosition = dropdown.classList.contains('down') ? 'down' : 'top';
-    const optimalDropdownPosition = sidebarProjectOptionsDropdown.getOptimalDropdownPosition();
+    const actualPosition = dropdown.classList.contains("down") ? "down" : "top";
+    const optimalDropdownPosition =
+      sidebarProjectOptionsDropdown.getOptimalDropdownPosition();
 
     if (actualPosition !== optimalDropdownPosition) {
       sidebarProjectOptionsDropdown.position(optimalDropdownPosition);
@@ -293,24 +310,25 @@ const sidebarProjectOptionsDropdown = (() => {
 
   function updateValues() {
     dropdown = document.querySelector(
-      '.sidebar-project-options-dropdown-content.show',
+      ".sidebar-project-options-dropdown-content.show"
     );
-    projectOptionsButton = document.querySelector('.project-item.active');
+    projectOptionsButton = document.querySelector(".project-item.active");
   }
 
   function getOptimalDropdownPosition() {
     let position;
 
-    const downDropdown = projectOptionsButton.getBoundingClientRect().bottom + 122
-      < window.innerHeight
-      ? (position = 'down')
-      : (position = 'top');
+    const downDropdown =
+      projectOptionsButton.getBoundingClientRect().bottom + 122 <
+      window.innerHeight
+        ? (position = "down")
+        : (position = "top");
 
     return position;
   }
 
   function position(position) {
-    if (position === 'down') {
+    if (position === "down") {
       down();
     } else {
       top();
@@ -324,9 +342,9 @@ const sidebarProjectOptionsDropdown = (() => {
   }
 
   function top() {
-    dropdown.classList.remove('down');
-    dropdown.classList.add('top');
-    dropdown.style.animation = 'none';
+    dropdown.classList.remove("down");
+    dropdown.classList.add("top");
+    dropdown.style.animation = "none";
 
     dropdown.style.top = `${
       projectOptionsButton.getBoundingClientRect().top - 125
@@ -335,9 +353,9 @@ const sidebarProjectOptionsDropdown = (() => {
   }
 
   function down() {
-    dropdown.classList.remove('top');
-    dropdown.classList.add('down');
-    dropdown.style.animation = 'none';
+    dropdown.classList.remove("top");
+    dropdown.classList.add("down");
+    dropdown.style.animation = "none";
 
     dropdown.style.top = `${
       projectOptionsButton.getBoundingClientRect().bottom - 3
@@ -348,76 +366,76 @@ const sidebarProjectOptionsDropdown = (() => {
   return { initialize, getOptimalDropdownPosition, position };
 })();
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.sidebar-project-options')) {
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".sidebar-project-options")) {
     const projectOptionsButton = event.target;
-    const projectSidebarElement = projectOptionsButton.closest('.project-item');
+    const projectSidebarElement = projectOptionsButton.closest(".project-item");
     const dropdown = document.querySelector(
-      '.sidebar-project-options-dropdown-content',
+      ".sidebar-project-options-dropdown-content"
     );
 
     const projectOptionsButtons = document.querySelectorAll(
-      '.sidebar-project-options',
+      ".sidebar-project-options"
     );
-    const sidebarContent = document.querySelector('.sidebar-content');
+    const sidebarContent = document.querySelector(".sidebar-content");
 
     const toggleDropdown = (() => {
-      const sideBarViewport = document.querySelector('.sidebar .os-viewport');
+      const sideBarViewport = document.querySelector(".sidebar .os-viewport");
       const sideBarScrollbar = document.querySelector(
-        '.sidebar .os-scrollbar-vertical .os-scrollbar-handle',
+        ".sidebar .os-scrollbar-vertical .os-scrollbar-handle"
       );
-      dropdown.classList.toggle('show');
+      dropdown.classList.toggle("show");
 
-      if (dropdown.classList.contains('show')) {
-        projectSidebarElement.classList.toggle('active');
+      if (dropdown.classList.contains("show")) {
+        projectSidebarElement.classList.toggle("active");
         sidebarProjectOptionsDropdown.initialize();
         changeSidebarProjectOptionsDropdown.observe(
-          document.querySelector('body'),
+          document.querySelector("body")
         );
-        sideBarScrollbar.classList.add('hide');
+        sideBarScrollbar.classList.add("hide");
         disableElementScroll(sideBarViewport);
         disableElementScroll(main);
-        sidebarContent.style.pointerEvents = 'none';
+        sidebarContent.style.pointerEvents = "none";
         projectOptionsButtons.forEach((button) => {
           if (button !== projectOptionsButton) {
-            button.style.opacity = '0';
-            button.style.pointerEvents = 'none';
+            button.style.opacity = "0";
+            button.style.pointerEvents = "none";
           }
         });
       } else {
         changeSidebarProjectOptionsDropdown.disconnect();
-        dropdown.classList.remove('down', 'top');
-        projectSidebarElement.classList.remove('active');
-        sideBarScrollbar.classList.remove('hide');
+        dropdown.classList.remove("down", "top");
+        projectSidebarElement.classList.remove("active");
+        sideBarScrollbar.classList.remove("hide");
         enableElementScroll(sideBarViewport);
         enableElementScroll(main);
-        sidebarContent.style.pointerEvents = 'auto';
+        sidebarContent.style.pointerEvents = "auto";
         projectOptionsButtons.forEach((button) => {
           button.style.opacity = null;
-          button.style.pointerEvents = 'all';
+          button.style.pointerEvents = "all";
         });
       }
     })();
 
     window.onclick = function (event) {
-      if (!event.target.matches('.sidebar-project-options')) {
-        const sideBarViewport = document.querySelector('.sidebar .os-viewport');
+      if (!event.target.matches(".sidebar-project-options")) {
+        const sideBarViewport = document.querySelector(".sidebar .os-viewport");
         const sideBarScrollbar = document.querySelector(
-          '.sidebar .os-scrollbar-vertical .os-scrollbar-handle',
+          ".sidebar .os-scrollbar-vertical .os-scrollbar-handle"
         );
-        if (dropdown.classList.contains('show')) {
+        if (dropdown.classList.contains("show")) {
           changeSidebarProjectOptionsDropdown.disconnect();
-          dropdown.classList.toggle('show');
-          dropdown.classList.remove('down', 'top');
-          projectSidebarElement.classList.remove('active');
-          sidebarContent.style.pointerEvents = 'all';
+          dropdown.classList.toggle("show");
+          dropdown.classList.remove("down", "top");
+          projectSidebarElement.classList.remove("active");
+          sidebarContent.style.pointerEvents = "all";
           projectOptionsButtons.forEach((button) => {
             button.style.opacity = null;
-            button.style.pointerEvents = 'all';
+            button.style.pointerEvents = "all";
           });
-          sideBarScrollbar.classList.remove('hide');
+          sideBarScrollbar.classList.remove("hide");
           enableElementScroll(sideBarViewport);
-          if (document.querySelector('.dropdown.show') === null) {
+          if (document.querySelector(".dropdown.show") === null) {
             enableElementScroll(main);
           }
         }
@@ -426,66 +444,68 @@ document.addEventListener('click', (event) => {
   }
 });
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.add-project-above')) {
-    const projectIndex = document.querySelector('.project-item.active').dataset
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".add-project-above")) {
+    const projectIndex = document.querySelector(".project-item.active").dataset
       .project;
     addProjectForm.dataset.project = projectIndex;
-    addProjectForm.dataset.position = 'above';
+    addProjectForm.dataset.position = "above";
   }
 });
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.add-project-below')) {
-    const projectIndex = document.querySelector('.project-item.active').dataset
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".add-project-below")) {
+    const projectIndex = document.querySelector(".project-item.active").dataset
       .project;
     addProjectForm.dataset.project = projectIndex;
-    addProjectForm.dataset.position = 'below';
+    addProjectForm.dataset.position = "below";
   }
 });
 
 // Section
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.add-section-hover')) {
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".add-section-hover")) {
     const addSectionHover = event.target;
-    const addSectionHoverButtons = document.querySelectorAll('.add-section-hover');
+    const addSectionHoverButtons =
+      document.querySelectorAll(".add-section-hover");
     const addSectionBox = (() => {
-      if (!addSectionHover.classList.contains('disabled')) {
+      if (!addSectionHover.classList.contains("disabled")) {
         addSectionHoverButtons.forEach((button) => {
-          button.classList.add('disabled');
+          button.classList.add("disabled");
         });
 
         const addSectionContainer = addSectionHover.closest(
-          '.add-section-container',
+          ".add-section-container"
         );
         const addSectionBoxElement = createElementFromTemplate(
-          addSectionBoxTemplate,
+          addSectionBoxTemplate
         );
         addSectionContainer.appendChild(addSectionBoxElement);
 
-        const sectionTitleInput = addSectionContainer.querySelector('.section-title');
-        sectionTitleInput.addEventListener('input', enableAddSectionButton);
+        const sectionTitleInput =
+          addSectionContainer.querySelector(".section-title");
+        sectionTitleInput.addEventListener("input", enableAddSectionButton);
         function enableAddSectionButton() {
           if (!/\S/.test(this.value)) {
-            addSectionButton.classList.remove('active');
+            addSectionButton.classList.remove("active");
           } else {
-            addSectionButton.classList.add('active');
+            addSectionButton.classList.add("active");
           }
         }
 
-        const addSectionButton = document.querySelector('#add-section');
-        addSectionButton.addEventListener('click', addSection);
+        const addSectionButton = document.querySelector("#add-section");
+        addSectionButton.addEventListener("click", addSection);
         function addSection() {
           if (/\S/.test(sectionTitleInput.value)) {
             const projectElement = document.querySelector(
-              '.main-content.enabled',
+              ".main-content.enabled"
             );
             const projectIndex = parseInt(projectElement.dataset.project);
             const sectionIndex = parseInt(
-              addSectionButton.closest('section').dataset.section,
+              addSectionButton.closest("section").dataset.section
             );
-            const currentSection = addSectionButton.closest('section');
+            const currentSection = addSectionButton.closest("section");
             const newSectionIndex = sectionIndex + 1;
             const sectionTitle = sectionTitleInput.value;
 
@@ -494,7 +514,7 @@ document.addEventListener('click', (event) => {
               toDoProjects.projects[projectIndex].sections.splice(
                 newSectionIndex,
                 0,
-                newSection,
+                newSection
               );
 
               saveToDoProjects();
@@ -502,7 +522,7 @@ document.addEventListener('click', (event) => {
 
             const addSectionToTheDOM = (() => {
               const addSectionElement = (() => {
-                const sections = projectElement.querySelectorAll('section');
+                const sections = projectElement.querySelectorAll("section");
                 sections.forEach((section) => {
                   const sectionI = parseInt(section.dataset.section);
                   if (sectionI > sectionIndex) {
@@ -512,47 +532,50 @@ document.addEventListener('click', (event) => {
 
                 const sectionTemplate = createSectionTemplate(
                   newSectionIndex,
-                  sectionTitle,
+                  sectionTitle
                 );
 
-                currentSection.insertAdjacentHTML('afterend', sectionTemplate);
+                currentSection.insertAdjacentHTML("afterend", sectionTemplate);
 
                 const sectionCompletedTasksContainer = document.querySelector(
-                  `[data-project="${projectIndex}"] [data-section="${newSectionIndex}"] .completed-tasks-items`,
+                  `[data-project="${projectIndex}"] [data-section="${newSectionIndex}"] .completed-tasks-items`
                 );
                 sectionCompletedTasksContainer.addEventListener(
-                  'transitionend',
-                  setCompletedTasksContainerFullHeight,
+                  "transitionend",
+                  setCompletedTasksContainerFullHeight
                 );
               })();
 
               const addProjectSectionDropdownElement = (() => {
-                const projectSectionDropdownElementTemplate = createProjectSectionDropdownElementTemplate(
-                  projectIndex,
-                  newSectionIndex,
-                );
+                const projectSectionDropdownElementTemplate =
+                  createProjectSectionDropdownElementTemplate(
+                    projectIndex,
+                    newSectionIndex
+                  );
 
-                const projectSectionDropdownElements = document.querySelectorAll(
-                  `.project-section-item[data-project="${projectIndex}"]`,
-                );
+                const projectSectionDropdownElements =
+                  document.querySelectorAll(
+                    `.project-section-item[data-project="${projectIndex}"]`
+                  );
                 projectSectionDropdownElements.forEach(
                   (sectionDropdownElement) => {
                     const sectionI = parseInt(
-                      sectionDropdownElement.dataset.section,
+                      sectionDropdownElement.dataset.section
                     );
                     if (sectionI > sectionIndex) {
                       sectionDropdownElement.dataset.section = sectionI + 1;
                     }
-                  },
+                  }
                 );
 
-                const adjacentSectionDropdownElements = document.querySelectorAll(
-                  `.project-section-item[data-project="${projectIndex}"][data-section="${sectionIndex}"]`,
-                );
+                const adjacentSectionDropdownElements =
+                  document.querySelectorAll(
+                    `.project-section-item[data-project="${projectIndex}"][data-section="${sectionIndex}"]`
+                  );
                 adjacentSectionDropdownElements.forEach((element) => {
                   element.insertAdjacentHTML(
-                    'afterend',
-                    projectSectionDropdownElementTemplate,
+                    "afterend",
+                    projectSectionDropdownElementTemplate
                   );
                 });
               })();
@@ -564,14 +587,14 @@ document.addEventListener('click', (event) => {
         }
 
         const cancelAddSectionButton = document.querySelector(
-          '#cancel-add-section',
+          "#cancel-add-section"
         );
-        cancelAddSectionButton.addEventListener('click', removeAddSectionBox);
+        cancelAddSectionButton.addEventListener("click", removeAddSectionBox);
         function removeAddSectionBox() {
-          const addSectionBox = document.querySelector('.add-section-box');
+          const addSectionBox = document.querySelector(".add-section-box");
           addSectionBox.remove();
           addSectionHoverButtons.forEach((button) => {
-            button.classList.remove('disabled');
+            button.classList.remove("disabled");
           });
         }
       }
@@ -579,56 +602,62 @@ document.addEventListener('click', (event) => {
   }
 });
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.section-top > .section-title')) {
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".section-top > .section-title")) {
     const sectionTitle = event.target;
 
-    const editSectionContainer = sectionTitle.closest('.section-top');
+    const editSectionContainer = sectionTitle.closest(".section-top");
 
-    let projectIndex = +sectionTitle.closest('[data-project]').dataset.project;
-    let sectionIndex = +sectionTitle.closest('[data-section]').dataset.section;
+    let projectIndex = +sectionTitle.closest("[data-project]").dataset.project;
+    let sectionIndex = +sectionTitle.closest("[data-section]").dataset.section;
 
     const appendEditSectionBox = (() => {
-      editSectionContainer.classList.add('edit');
+      editSectionContainer.classList.add("edit");
       let editSectionBoxElement = createElementFromTemplate(
-        editSectionBoxTemplate,
+        editSectionBoxTemplate
       );
       editSectionContainer.appendChild(editSectionBoxElement);
-      editSectionBoxElement = editSectionContainer.querySelector('.edit-section-box');
+      editSectionBoxElement =
+        editSectionContainer.querySelector(".edit-section-box");
 
-      const sectionTitleInput = editSectionBoxElement.querySelector('.section-title');
-      sectionTitleInput.value = toDoProjects.projects[projectIndex].sections[sectionIndex].title;
-      const editSectionButton = editSectionBoxElement.querySelector('.edit-section');
-      sectionTitleInput.addEventListener('input', enableEditSectionButton);
+      const sectionTitleInput =
+        editSectionBoxElement.querySelector(".section-title");
+      sectionTitleInput.value =
+        toDoProjects.projects[projectIndex].sections[sectionIndex].title;
+      const editSectionButton =
+        editSectionBoxElement.querySelector(".edit-section");
+      sectionTitleInput.addEventListener("input", enableEditSectionButton);
 
       function enableEditSectionButton() {
         if (!/\S/.test(sectionTitleInput.value)) {
-          editSectionButton.classList.remove('active');
+          editSectionButton.classList.remove("active");
         } else {
-          editSectionButton.classList.add('active');
+          editSectionButton.classList.add("active");
         }
       }
 
       function editSectionTitle() {
-        projectIndex = +sectionTitle.closest('[data-project]').dataset.project;
-        sectionIndex = +sectionTitle.closest('[data-section]').dataset.section;
+        projectIndex = +sectionTitle.closest("[data-project]").dataset.project;
+        sectionIndex = +sectionTitle.closest("[data-section]").dataset.section;
 
         if (/\S/.test(sectionTitleInput.value) && sectionIndex !== 0) {
           const editSectionTitle = (() => {
-            toDoProjects.projects[projectIndex].sections[sectionIndex].title = sectionTitleInput.value;
+            toDoProjects.projects[projectIndex].sections[sectionIndex].title =
+              sectionTitleInput.value;
 
             saveToDoProjects();
           })();
 
           const editSectionTitleElements = (() => {
             editSectionBoxElement.remove();
-            editSectionContainer.classList.remove('edit');
-            const sectionTitle = toDoProjects.projects[projectIndex].sections[sectionIndex].title;
+            editSectionContainer.classList.remove("edit");
+            const sectionTitle =
+              toDoProjects.projects[projectIndex].sections[sectionIndex].title;
             const sectionTitleElements = document.querySelectorAll(
-              `[data-project="${projectIndex}"] [data-section="${sectionIndex}"] .section-title, .project-section-item[data-project="${projectIndex}"][data-section="${sectionIndex}"] .project-item-title, .selected-project-section[data-project="${projectIndex}"][data-section="${sectionIndex}"] .project-item-section-title, .task-item[data-project="${projectIndex}"][data-section="${sectionIndex}"] .selected-project-section-link .project-item-section-title`,
+              `[data-project="${projectIndex}"] [data-section="${sectionIndex}"] .section-title, .project-section-item[data-project="${projectIndex}"][data-section="${sectionIndex}"] .project-item-title, .selected-project-section[data-project="${projectIndex}"][data-section="${sectionIndex}"] .project-item-section-title, .task-item[data-project="${projectIndex}"][data-section="${sectionIndex}"] .selected-project-section-link .project-item-section-title`
             );
             sectionTitleElements.forEach((sectionTitleElement) => {
-              if (sectionTitleElement.matches('.project-item-section-title')) {
+              if (sectionTitleElement.matches(".project-item-section-title")) {
                 sectionTitleElement.textContent = `/ ${sectionTitle}`;
               } else {
                 sectionTitleElement.textContent = sectionTitle;
@@ -638,16 +667,16 @@ document.addEventListener('click', (event) => {
         }
       }
 
-      editSectionButton.addEventListener('click', editSectionTitle);
+      editSectionButton.addEventListener("click", editSectionTitle);
 
       const cancelEditSectionButton = editSectionContainer.querySelector(
-        '.cancel-edit-section',
+        ".cancel-edit-section"
       );
 
-      cancelEditSectionButton.addEventListener('click', removeEditSectionBox);
+      cancelEditSectionButton.addEventListener("click", removeEditSectionBox);
 
       function removeEditSectionBox() {
-        editSectionContainer.classList.remove('edit');
+        editSectionContainer.classList.remove("edit");
         editSectionBoxElement.remove();
       }
     })();
@@ -657,92 +686,94 @@ document.addEventListener('click', (event) => {
 // Sections Accordions
 
 export function addSetSectionsMaxHeightEL() {
-  const sectionsContent = document.querySelectorAll('.section-content');
+  const sectionsContent = document.querySelectorAll(".section-content");
   sectionsContent.forEach((sectionContent) => {
-    const sectionIndex = sectionContent.closest('section').dataset.section;
-    if (sectionIndex !== '0' && sectionIndex !== 'overdue') {
+    const sectionIndex = sectionContent.closest("section").dataset.section;
+    if (sectionIndex !== "0" && sectionIndex !== "overdue") {
       function setFullHeight() {
-        const sectionExpandButton = this.closest('section').querySelector('.section-expand');
-        if (sectionExpandButton.classList.contains('active') === true) {
-          this.style.maxHeight = '100%';
-          this.style.overflow = 'visible';
+        const sectionExpandButton =
+          this.closest("section").querySelector(".section-expand");
+        if (sectionExpandButton.classList.contains("active") === true) {
+          this.style.maxHeight = "100%";
+          this.style.overflow = "visible";
         } else {
-          this.style.overflow = 'hidden';
+          this.style.overflow = "hidden";
         }
       }
-      sectionContent.removeEventListener('transitionend', setFullHeight);
-      sectionContent.addEventListener('transitionend', setFullHeight);
+      sectionContent.removeEventListener("transitionend", setFullHeight);
+      sectionContent.addEventListener("transitionend", setFullHeight);
     }
   });
 }
 
 function setCompletedTasksContainerFullHeight() {
-  if (this.classList.contains('disabled')) {
+  if (this.classList.contains("disabled")) {
     this.style.maxHeight = `${this.scrollHeight}px`;
   }
 }
 
 export function addSetCompletedTasksContainerMaxHeightEL() {
   const completedTasksContainersElements = document.querySelectorAll(
-    '.completed-tasks-items',
+    ".completed-tasks-items"
   );
   completedTasksContainersElements.forEach((completedTaskContainer) => {
     completedTaskContainer.removeEventListener(
-      'transitionend',
-      setCompletedTasksContainerFullHeight,
+      "transitionend",
+      setCompletedTasksContainerFullHeight
     );
     completedTaskContainer.addEventListener(
-      'transitionend',
-      setCompletedTasksContainerFullHeight,
+      "transitionend",
+      setCompletedTasksContainerFullHeight
     );
   });
 }
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.section-expand')) {
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".section-expand")) {
     const expandSectionButton = event.target;
-    expandSectionButton.classList.toggle('active');
+    expandSectionButton.classList.toggle("active");
 
     const projectIndex = parseInt(
-      document.querySelector('.main-content.enabled').dataset.project,
+      document.querySelector(".main-content.enabled").dataset.project
     );
     const sectionIndex = parseInt(
-      expandSectionButton.closest('section').dataset.section,
+      expandSectionButton.closest("section").dataset.section
     );
 
     const content = expandSectionButton
-      .closest('section')
-      .querySelector('.section-content');
+      .closest("section")
+      .querySelector(".section-content");
 
     function saveExpandedStatus(status) {
-      toDoProjects.projects[projectIndex].sections[sectionIndex].expanded = status;
+      toDoProjects.projects[projectIndex].sections[sectionIndex].expanded =
+        status;
       saveToDoProjects();
     }
 
     const toggleSectionAccordion = (() => {
-      if (content.classList.contains('active')) {
-        content.classList.remove('active');
-        content.style.maxHeight = '100%';
+      if (content.classList.contains("active")) {
+        content.classList.remove("active");
+        content.style.maxHeight = "100%";
       }
 
       if (content.style.maxHeight) {
         const shrinkAccordion = (() => {
-          content.style.opacity = '0';
+          content.style.opacity = "0";
           content.style.maxHeight = `${content.scrollHeight}px`;
 
           setTimeout(() => {
             content.style.maxHeight = null;
           }, 121);
-          if (content.querySelector('.add-task-box-container')) {
+          if (content.querySelector(".add-task-box-container")) {
             const removeAddTaskBox = (() => {
               const addTaskBox = document.querySelector(
-                '.add-task-box-container:not(.main)',
+                ".add-task-box-container:not(.main)"
               );
               if (addTaskBox) {
                 addTaskBox.remove();
-                const addTaskButtons = document.querySelectorAll('.add-task');
+                const addTaskButtons = document.querySelectorAll(".add-task");
                 addTaskButtons.forEach((button) => {
-                  button.style.display = 'flex';
+                  button.style.display = "flex";
                 });
               }
             })();
@@ -751,7 +782,7 @@ document.addEventListener('click', (event) => {
         })();
       } else {
         const expandAccordion = (() => {
-          content.style.opacity = '1';
+          content.style.opacity = "1";
           content.style.maxHeight = `${content.scrollHeight}px`;
           saveExpandedStatus(true);
         })();
@@ -762,72 +793,77 @@ document.addEventListener('click', (event) => {
 
 //
 
-const projectColorDropdownButtons = document.querySelectorAll('.project-color');
+const projectColorDropdownButtons = document.querySelectorAll(".project-color");
 projectColorDropdownButtons.forEach((button) => {
-  button.addEventListener('click', openProjectColorDropdown, false);
+  button.addEventListener("click", openProjectColorDropdown, false);
 });
 
 function openProjectColorDropdown() {
-  this.classList.toggle('active');
+  this.classList.toggle("active");
   const projectColorDropdown = this.nextElementSibling;
 
-  if (this.classList.contains('active')) {
-    projectColorDropdown.classList.replace('active', 'disabled');
-  } else if (this.classList.contains('disabled')) {
-    projectColorDropdown.classList.replace('disabled', 'active');
+  if (this.classList.contains("active")) {
+    projectColorDropdown.classList.replace("active", "disabled");
+  } else if (this.classList.contains("disabled")) {
+    projectColorDropdown.classList.replace("disabled", "active");
   } else {
-    projectColorDropdown.classList.add('active');
+    projectColorDropdown.classList.add("active");
   }
-  projectColorDropdown.classList.remove('hidden');
-  projectColorDropdown.classList.toggle('show');
+  projectColorDropdown.classList.remove("hidden");
+  projectColorDropdown.classList.toggle("show");
 }
 
-document.addEventListener('click', (event) => {
-  if (!event.target.matches('.project-color')) {
-    if (document.querySelector('.project-color-dropdown-content.show')) {
-      const projectColorButton = document.querySelector('.project-color.active');
-      const dropdown = document.querySelector(
-        '.project-color-dropdown-content.show',
+document.addEventListener("click", (event) => {
+  if (!event.target.matches(".project-color")) {
+    if (document.querySelector(".project-color-dropdown-content.show")) {
+      const projectColorButton = document.querySelector(
+        ".project-color.active"
       );
-      projectColorButton.classList.remove('active');
-      dropdown.classList.remove('show');
-      dropdown.classList.add('hidden');
+      const dropdown = document.querySelector(
+        ".project-color-dropdown-content.show"
+      );
+      projectColorButton.classList.remove("active");
+      dropdown.classList.remove("show");
+      dropdown.classList.add("hidden");
     }
   }
 });
 
 const projectColorDropdownItems = document.querySelectorAll(
-  '.project-color-item',
+  ".project-color-item"
 );
 
 projectColorDropdownItems.forEach((button) => {
-  button.addEventListener('click', () => {
-    const colorCircle = button.querySelector('.circle');
+  button.addEventListener("click", () => {
+    const colorCircle = button.querySelector(".circle");
     const projectColorDropdownButton = button
-      .closest('.project-color-dropdown')
-      .querySelector('.project-color');
+      .closest(".project-color-dropdown")
+      .querySelector(".project-color");
     const projectColorTitle = button
-      .closest('.project-color-dropdown')
-      .querySelector('.project-color-name');
+      .closest(".project-color-dropdown")
+      .querySelector(".project-color-name");
 
-    const projectColorDropdownButtonCircle = projectColorDropdownButton.querySelector('.circle');
-    projectColorDropdownButtonCircle.classList.value = colorCircle.classList.value;
+    const projectColorDropdownButtonCircle =
+      projectColorDropdownButton.querySelector(".circle");
+    projectColorDropdownButtonCircle.classList.value =
+      colorCircle.classList.value;
 
-    const colorName = button.querySelector('.project-color-name-item');
+    const colorName = button.querySelector(".project-color-name-item");
     projectColorTitle.textContent = colorName.textContent;
 
-    projectColorDropdownButton.dataset.color = colorCircle.classList.value.slice(7);
+    projectColorDropdownButton.dataset.color =
+      colorCircle.classList.value.slice(7);
 
     projectColorDropdownItems.forEach((btn) => {
       if (btn === button) {
-        btn.classList.add('selected');
+        btn.classList.add("selected");
       } else {
-        btn.classList.remove('selected');
+        btn.classList.remove("selected");
       }
     });
 
     const projectColorDropdownContainer = document.querySelector(
-      '.project-color-dropdown-listbox',
+      ".project-color-dropdown-listbox"
     );
 
     setTimeout(() => {
@@ -836,8 +872,8 @@ projectColorDropdownItems.forEach((button) => {
   });
 });
 
-const addProjectModal = document.querySelector('.add-project-modal');
-const projectTitleInputs = document.querySelectorAll('.project-name');
+const addProjectModal = document.querySelector(".add-project-modal");
+const projectTitleInputs = document.querySelectorAll(".project-name");
 
 function checkProjectTitleCharacterLimit() {
   const charactersLength = this.value.length;
@@ -845,53 +881,54 @@ function checkProjectTitleCharacterLimit() {
   if (charactersLength >= 110) {
     characterLimit.textContent = `Character Limit: ${charactersLength}/120`;
   } else {
-    characterLimit.textContent = '';
+    characterLimit.textContent = "";
   }
 }
 
 function enableProjectButtonAction() {
-  const submitProjectButton = this.closest('.modal').querySelector('.submit-project');
+  const submitProjectButton =
+    this.closest(".modal").querySelector(".submit-project");
   if (!/\S/.test(this.value)) {
-    submitProjectButton.classList.remove('active');
+    submitProjectButton.classList.remove("active");
   } else {
-    submitProjectButton.classList.add('active');
+    submitProjectButton.classList.add("active");
   }
 }
 
 projectTitleInputs.forEach((input) => {
-  input.addEventListener('input', checkProjectTitleCharacterLimit, false);
+  input.addEventListener("input", checkProjectTitleCharacterLimit, false);
 });
 
 projectTitleInputs.forEach((input) => {
-  input.addEventListener('input', enableProjectButtonAction, false);
+  input.addEventListener("input", enableProjectButtonAction, false);
 });
 
 function updateAddProjectModal(mutationList) {
   mutationList.forEach((mutation) => {
-    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+    if (mutation.type === "attributes" && mutation.attributeName === "class") {
       const addProjectModal = mutation.target;
-      const addProjectForm = addProjectModal.querySelector('.add-project-form');
-      const projectTitleInput = addProjectModal.querySelector('.project-name');
+      const addProjectForm = addProjectModal.querySelector(".add-project-form");
+      const projectTitleInput = addProjectModal.querySelector(".project-name");
       const characterLimit = addProjectModal.querySelector(
-        '.project-title-character-limit',
+        ".project-title-character-limit"
       );
 
       if (
-        addProjectModal.classList.contains('active')
-        && addProjectForm.dataset.project
+        addProjectModal.classList.contains("active") &&
+        addProjectForm.dataset.project
       ) {
-        addProjectForm.removeAttribute('data-project');
-        addProjectForm.removeAttribute('data-position');
+        addProjectForm.removeAttribute("data-project");
+        addProjectForm.removeAttribute("data-position");
       }
 
       setTimeout(() => {
         const projectCharcoalColorItem = addProjectModal.querySelector(
-          '.project-color-item:nth-of-type(18)',
+          ".project-color-item:nth-of-type(18)"
         );
         projectCharcoalColorItem.click();
-        projectTitleInput.value = '';
-        characterLimit.textContent = '';
-        addProjectButton.classList.remove('active');
+        projectTitleInput.value = "";
+        characterLimit.textContent = "";
+        addProjectButton.classList.remove("active");
       }, 140);
     }
   });
@@ -905,20 +942,20 @@ const addProjectModalObserver = new MutationObserver(updateAddProjectModal);
 addProjectModalObserver.observe(addProjectModal, options);
 
 const addProjectCancelButton = document.querySelector(
-  '#add-project-cancel-button',
+  "#add-project-cancel-button"
 );
-addProjectCancelButton.addEventListener('click', closeModals);
+addProjectCancelButton.addEventListener("click", closeModals);
 
-const sidebarAddProjectButton = document.querySelector('#add-project');
-const addProjectButton = document.querySelector('#add-project-button');
-const addProjectForm = document.querySelector('.add-project-form');
-const addProjectTitleInput = document.querySelector('.project-name');
+const sidebarAddProjectButton = document.querySelector("#add-project");
+const addProjectButton = document.querySelector("#add-project-button");
+const addProjectForm = document.querySelector(".add-project-form");
+const addProjectTitleInput = document.querySelector(".project-name");
 
-sidebarAddProjectButton.addEventListener('click', () => {
+sidebarAddProjectButton.addEventListener("click", () => {
   addProjectTitleInput.focus();
 });
 
-addProjectButton.addEventListener('click', addProject);
+addProjectButton.addEventListener("click", addProject);
 
 function addProject() {
   let currentProjectIndex = false;
@@ -929,48 +966,48 @@ function addProject() {
     currentProjectIndex = parseInt(addProjectForm.dataset.project);
     projectPosition = addProjectForm.dataset.position;
 
-    if (projectPosition === 'above') {
+    if (projectPosition === "above") {
       newProjectIndex = currentProjectIndex;
       currentProjectIndex += 1;
-    } else if (projectPosition === 'below') {
+    } else if (projectPosition === "below") {
       newProjectIndex = currentProjectIndex + 1;
     }
   } else {
     newProjectIndex = toDoProjects.projects.length;
   }
 
-  if (addProjectButton.classList.contains('active')) {
-    const projectColorDropdownButton = document.querySelector('.project-color');
-    const projectTitleInput = document.querySelector('.project-name');
+  if (addProjectButton.classList.contains("active")) {
+    const projectColorDropdownButton = document.querySelector(".project-color");
+    const projectTitleInput = document.querySelector(".project-name");
     const title = projectTitleInput.value;
 
     const validColors = [
-      'berry-red',
-      'red',
-      'orange',
-      'yellow',
-      'olive-green',
-      'lime-green',
-      'green',
-      'mint-green',
-      'teal',
-      'sky-blue',
-      'light-blue',
-      'blue',
-      'grape',
-      'violet',
-      'lavender',
-      'magenta',
-      'salmon',
-      'charcoal',
-      'gray',
-      'taupe',
+      "berry-red",
+      "red",
+      "orange",
+      "yellow",
+      "olive-green",
+      "lime-green",
+      "green",
+      "mint-green",
+      "teal",
+      "sky-blue",
+      "light-blue",
+      "blue",
+      "grape",
+      "violet",
+      "lavender",
+      "magenta",
+      "salmon",
+      "charcoal",
+      "gray",
+      "taupe",
     ];
 
     let { color } = projectColorDropdownButton.dataset;
 
     if (validColors.includes(color) === false) {
-      color = 'charcoal';
+      color = "charcoal";
     }
 
     const project = projectCreate.newProject(title, color);
@@ -980,7 +1017,7 @@ function addProject() {
 
     const updateProjectsElements = (() => {
       if (projectPosition) {
-        const projectsElements = document.querySelectorAll('[data-project]');
+        const projectsElements = document.querySelectorAll("[data-project]");
         projectsElements.forEach((projectElement) => {
           const projectElementValue = parseInt(projectElement.dataset.project);
           if (projectElementValue >= newProjectIndex) {
@@ -995,21 +1032,21 @@ function addProject() {
         title,
         newProjectIndex,
         currentProjectIndex,
-        projectPosition,
+        projectPosition
       );
       addProjectToProjectsList(
         newProjectIndex,
         color,
         title,
         currentProjectIndex,
-        projectPosition,
+        projectPosition
       );
       addProjectToSelectSectionDropdowns(
         newProjectIndex,
         currentProjectIndex,
-        projectPosition,
+        projectPosition
       );
-    }());
+    })();
 
     closeModals();
   }
@@ -1019,20 +1056,20 @@ function addProjectToTheDOM(
   title,
   newProjectIndex,
   currentProjectIndex,
-  projectPosition,
+  projectPosition
 ) {
   const projectTemplate = createProjectTemplate(title, newProjectIndex);
   const projectElement = createElementFromTemplate(projectTemplate);
 
   if (currentProjectIndex || currentProjectIndex === 0) {
     const currentProject = document.querySelector(
-      `.main-content[data-project="${currentProjectIndex}"]`,
+      `.main-content[data-project="${currentProjectIndex}"]`
     );
 
-    if (projectPosition === 'above') {
-      currentProject.insertAdjacentHTML('beforebegin', projectTemplate);
+    if (projectPosition === "above") {
+      currentProject.insertAdjacentHTML("beforebegin", projectTemplate);
     } else {
-      currentProject.insertAdjacentHTML('afterend', projectTemplate);
+      currentProject.insertAdjacentHTML("afterend", projectTemplate);
     }
   } else {
     main.appendChild(projectElement);
@@ -1044,32 +1081,32 @@ function addProjectToProjectsList(
   color,
   title,
   currentProjectIndex,
-  projectPosition,
+  projectPosition
 ) {
   const projectSidebarTemplate = createProjectSidebarTemplate(
     newProjectIndex,
     color,
-    title,
+    title
   );
   const projectSidebarElement = createElementFromTemplate(
-    projectSidebarTemplate,
+    projectSidebarTemplate
   );
   if (currentProjectIndex) {
     const currentProject = document.querySelector(
-      `.project-item[data-project="${currentProjectIndex}"]`,
+      `.project-item[data-project="${currentProjectIndex}"]`
     );
 
-    if (projectPosition === 'above') {
-      currentProject.insertAdjacentHTML('beforebegin', projectSidebarTemplate);
+    if (projectPosition === "above") {
+      currentProject.insertAdjacentHTML("beforebegin", projectSidebarTemplate);
     } else {
-      currentProject.insertAdjacentHTML('afterend', projectSidebarTemplate);
+      currentProject.insertAdjacentHTML("afterend", projectSidebarTemplate);
     }
   } else {
     sidebarProjectsList.appendChild(projectSidebarElement);
   }
 
   const projectSidebar = document.querySelector(
-    `.project-item[data-project="${newProjectIndex}"]`,
+    `.project-item[data-project="${newProjectIndex}"]`
   );
   projectSidebar.click();
 }
@@ -1077,36 +1114,37 @@ function addProjectToProjectsList(
 function addProjectToSelectSectionDropdowns(
   newProjectIndex,
   currentProjectIndex,
-  projectPosition,
+  projectPosition
 ) {
   const selectProjectSectionDropdowns = document.querySelectorAll(
-    '.select-project-section-dropdown-content ul',
+    ".select-project-section-dropdown-content ul"
   );
-  const projectSectionDropdownElementTemplate = createProjectSectionDropdownElementTemplate(newProjectIndex, 0);
+  const projectSectionDropdownElementTemplate =
+    createProjectSectionDropdownElementTemplate(newProjectIndex, 0);
   if (currentProjectIndex) {
     const currentSectionsDropdownElements = document.querySelectorAll(
-      `.project-section-item[data-project="${currentProjectIndex}"][data-section="0"]`,
+      `.project-section-item[data-project="${currentProjectIndex}"][data-section="0"]`
     );
     currentSectionsDropdownElements.forEach(
       (currentProjectSectionDropdownElement) => {
-        if (projectPosition === 'above') {
+        if (projectPosition === "above") {
           currentProjectSectionDropdownElement.insertAdjacentHTML(
-            'beforebegin',
-            projectSectionDropdownElementTemplate,
+            "beforebegin",
+            projectSectionDropdownElementTemplate
           );
         } else {
           currentProjectSectionDropdownElement.insertAdjacentHTML(
-            'afterend',
-            projectSectionDropdownElementTemplate,
+            "afterend",
+            projectSectionDropdownElementTemplate
           );
         }
-      },
+      }
     );
   } else {
     selectProjectSectionDropdowns.forEach((dropdown) => {
       dropdown.insertAdjacentHTML(
-        'beforeend',
-        projectSectionDropdownElementTemplate,
+        "beforeend",
+        projectSectionDropdownElementTemplate
       );
     });
   }
@@ -1114,33 +1152,33 @@ function addProjectToSelectSectionDropdowns(
 
 // Sidebar
 
-const menuButton = document.querySelector('#menu-button');
-const menuIcon = document.querySelector('.menu_icon');
-const menuCloseIcon = document.querySelector('.close_icon');
-export const sideBar = document.querySelector('.sidebar');
+const menuButton = document.querySelector("#menu-button");
+const menuIcon = document.querySelector(".menu_icon");
+const menuCloseIcon = document.querySelector(".close_icon");
+export const sideBar = document.querySelector(".sidebar");
 let sideBarViewport;
 document.addEventListener(
-  'DOMContentLoaded',
+  "DOMContentLoaded",
   () => {
-    sideBarViewport = document.querySelector('.sidebar .os-viewport');
+    sideBarViewport = document.querySelector(".sidebar .os-viewport");
   },
-  { once: true },
+  { once: true }
 );
-const mainOverlay = document.querySelector('.main-overlay');
-const minScreenWidth = window.matchMedia('(min-width: 740px)');
+const mainOverlay = document.querySelector(".main-overlay");
+const minScreenWidth = window.matchMedia("(min-width: 740px)");
 
-menuButton.addEventListener('click', toggleNav);
-mainOverlay.addEventListener('click', toggleNav);
+menuButton.addEventListener("click", toggleNav);
+mainOverlay.addEventListener("click", toggleNav);
 
 function changeMenuIcon() {
-  if (menuButton.classList.contains('open')) {
-    menuButton.classList.replace('open', 'close');
-    menuIcon.style.display = 'none';
-    menuCloseIcon.style.display = 'block';
-  } else if (menuButton.classList.contains('close')) {
-    menuButton.classList.replace('close', 'open');
-    menuCloseIcon.style.display = 'none';
-    menuIcon.style.display = 'block';
+  if (menuButton.classList.contains("open")) {
+    menuButton.classList.replace("open", "close");
+    menuIcon.style.display = "none";
+    menuCloseIcon.style.display = "block";
+  } else if (menuButton.classList.contains("close")) {
+    menuButton.classList.replace("close", "open");
+    menuCloseIcon.style.display = "none";
+    menuIcon.style.display = "block";
   }
 }
 
@@ -1153,24 +1191,24 @@ const changeSidebarWhileResizing = new ResizeObserver((entries) => {
   entries.forEach((entry) => {
     if (minScreenWidth.matches) {
       if (
-        menuButton.classList.contains('open')
-        && mainMarginLeft !== '305px'
-        && sidebarWasAlreadyOpened
+        menuButton.classList.contains("open") &&
+        mainMarginLeft !== "305px" &&
+        sidebarWasAlreadyOpened
       ) {
         toggleNav();
         sidebarWasAlreadyOpened = false;
       }
 
       if (
-        menuButton.classList.contains('close')
-        && mainMarginLeft !== '305px'
+        menuButton.classList.contains("close") &&
+        mainMarginLeft !== "305px"
       ) {
         toggleNav();
         toggleNav();
       }
     } else if (
-      menuButton.classList.contains('close')
-      && mainMarginLeft === '305px'
+      menuButton.classList.contains("close") &&
+      mainMarginLeft === "305px"
     ) {
       toggleNav();
       sidebarWasAlreadyOpened = true;
@@ -1179,37 +1217,83 @@ const changeSidebarWhileResizing = new ResizeObserver((entries) => {
 });
 
 function toggleNav() {
-  changeSidebarWhileResizing.observe(document.querySelector('body'));
+  changeSidebarWhileResizing.observe(document.querySelector("body"));
   changeMenuIcon();
-  if (sideBar.classList.contains('open') === false) {
-    sideBar.classList.remove('closed');
-    sideBar.classList.add('open');
+  if (sideBar.classList.contains("open") === false) {
+    sideBar.classList.remove("closed");
+    sideBar.classList.add("open");
     openNav();
   } else {
-    sideBar.classList.replace('open', 'closed');
+    sideBar.classList.replace("open", "closed");
     closeNav();
   }
 }
 
-const startMainTransitionAnimation = (num) => {
-  const animation = num === 1 ? 'main-transition-effect' : `main-transition-effect-${num}`;
+const setMainTransformValues = (shrinking) => {
+  const scrollbarWidth = 17;
+  const mainProjectContainerMaxContentWidth = 808;
+  const mainProjectContainerXPadding = 56;
+  const getMainProjectContainerWidth = (sidebar) => {
+    let sidebarWidth = sidebar ? 305 : 0;
+    let width =
+      window.innerWidth -
+      mainProjectContainerXPadding * 2 -
+      scrollbarWidth -
+      sidebarWidth;
+    return width <= 807 ? width : 808;
+  };
+  const mainProjectContainerContentWidth = getMainProjectContainerWidth();
+  const mainProjectContainerContentWidthWithSidebar =
+    getMainProjectContainerWidth(true);
+  const mainProjectContainerHasMaxContentWidth =
+    mainProjectContainerContentWidth === mainProjectContainerMaxContentWidth
+      ? true
+      : false;
+  const mainProjectContainerVisibleXPadding =
+    (window.innerWidth - mainProjectContainerContentWidth - scrollbarWidth) / 2;
+  let scaleXValue;
+  let translateXValue;
+  if (shrinking) {
+    scaleXValue =
+      mainProjectContainerContentWidth /
+      mainProjectContainerContentWidthWithSidebar;
+    if (scaleXValue === 1) {
+      scaleXValue = 1;
+    } else {
+      scaleXValue = scaleXValue * 0.85;
+    }
+    translateXValue = "-152px";
+  } else {
+    scaleXValue =
+      mainProjectContainerContentWidthWithSidebar /
+      mainProjectContainerContentWidth;
+    translateXValue = "152px";
+  }
+  main.style.setProperty("--translateX", translateXValue);
+  main.style.setProperty("--scaleX", scaleXValue);
+};
+
+const startMainTransitionAnimation = () => {
+  const animation = "main-transition-effect";
   main.classList.add(animation);
-  main.addEventListener('transitionend', () => {
-    main.classList.remove(animation);
-  }, { once: true });
+  main.addEventListener(
+    "animationend",
+    () => {
+      main.classList.remove(animation);
+    },
+    { once: true }
+  );
 };
 
 function openNav() {
   if (minScreenWidth.matches && !isMobile) {
-    main.style.marginLeft = '305px';
-    startMainTransitionAnimation(1);
-    mainOverlay.style.opacity = '0';
-    mainOverlay.style.pointerEvents = 'none';
+    setMainTransformValues(true);
+    startMainTransitionAnimation();
+    mainOverlay.style.opacity = "0";
+    mainOverlay.style.pointerEvents = "none";
   } else {
-    main.style.marginLeft = '0px';
-    startMainTransitionAnimation(1);
-    mainOverlay.style.opacity = '1';
-    mainOverlay.style.pointerEvents = 'all';
+    mainOverlay.style.opacity = "1";
+    mainOverlay.style.pointerEvents = "all";
   }
 }
 
@@ -1220,14 +1304,16 @@ function closeNav() {
     }, 250);
   }
 
-  main.style.marginLeft = '0px';
-  mainOverlay.style.opacity = '0';
-  mainOverlay.style.pointerEvents = 'none';
-  startMainTransitionAnimation(2);
+  mainOverlay.style.opacity = "0";
+  mainOverlay.style.pointerEvents = "none";
+  if (minScreenWidth.matches && !isMobile) {
+    setMainTransformValues(false);
+    startMainTransitionAnimation();
+  }
 }
 
-document.addEventListener('click', (event) => {
-  if (event.target.matches('.sidebar-item')) {
+document.addEventListener("click", (event) => {
+  if (event.target.matches(".sidebar-item")) {
     const currentSidebarElement = event.target;
     saveTaskBoxTask();
 
@@ -1238,7 +1324,7 @@ document.addEventListener('click', (event) => {
     }
 
     const toggledCompletedTasksButton = document.querySelector(
-      '.toggle-completed-tasks.hide',
+      ".toggle-completed-tasks.hide"
     );
 
     if (toggledCompletedTasksButton) {
@@ -1246,54 +1332,57 @@ document.addEventListener('click', (event) => {
     }
 
     const previusSidebarElement = document.querySelector(
-      '.sidebar-item.selected',
+      ".sidebar-item.selected"
     );
     if (previusSidebarElement) {
-      previusSidebarElement.classList.remove('selected');
+      previusSidebarElement.classList.remove("selected");
     }
 
     const projectIndex = currentSidebarElement.dataset.project;
     const currentProjectContainer = document.querySelector(
-      `.main-content[data-project="${projectIndex}"]`,
+      `.main-content[data-project="${projectIndex}"]`
     );
 
     const previusProjectContainer = document.querySelector(
-      '.main-content.enabled',
+      ".main-content.enabled"
     );
     if (previusProjectContainer !== currentProjectContainer) {
       main.scrollTo({ top: 0 });
-      previusProjectContainer.classList.remove('enabled');
+      previusProjectContainer.classList.remove("enabled");
 
       function setDisplayNone() {
-        previusProjectContainer.style.display = 'none';
+        previusProjectContainer.style.display = "none";
       }
 
-      previusProjectContainer.addEventListener('animationend', setDisplayNone, {
+      previusProjectContainer.addEventListener("animationend", setDisplayNone, {
         once: true,
       });
-      previusProjectContainer.classList.add('disabled');
+      previusProjectContainer.classList.add("disabled");
     }
 
-    currentSidebarElement.classList.add('selected');
+    currentSidebarElement.classList.add("selected");
 
-    currentProjectContainer.classList.remove('disabled');
+    currentProjectContainer.classList.remove("disabled");
     currentProjectContainer.style.display = null;
-    currentProjectContainer.classList.add('enabled');
+    currentProjectContainer.classList.add("enabled");
 
-    if (!minScreenWidth.matches && sideBar.classList.contains('open') || isMobile) {
+    if (
+      (!minScreenWidth.matches && sideBar.classList.contains("open")) ||
+      isMobile
+    ) {
       toggleNav();
     }
   }
 });
 
-export const sidebarProjectsList = document.querySelector('.projects-list');
-const projectsAccordion = document.querySelector('.projects-accordion');
+export const sidebarProjectsList = document.querySelector(".projects-list");
+const projectsAccordion = document.querySelector(".projects-accordion");
 
-projectsAccordion.addEventListener('click', function toggleAccordion() {
-  this.classList.toggle('active');
-  if (this.classList.contains('active')) {
+projectsAccordion.addEventListener("click", function toggleAccordion() {
+  this.classList.toggle("active");
+  if (this.classList.contains("active")) {
     sidebarProjectsList.style.maxHeight = `${sidebarProjectsList.scrollHeight}px`;
-    sidebarProjectsList.style.opacity = '1';
+    sidebarProjectsList.style.opacity = "1";
   } else {
     sidebarProjectsList.style.maxHeight = null;
     sidebarProjectsList.style.opacity = null;
@@ -1301,12 +1390,12 @@ projectsAccordion.addEventListener('click', function toggleAccordion() {
 });
 
 function setProjectsAccordionMaxHeight() {
-  if (projectsAccordion.classList.contains('active')) {
-    sidebarProjectsList.style.maxHeight = '100%';
+  if (projectsAccordion.classList.contains("active")) {
+    sidebarProjectsList.style.maxHeight = "100%";
   }
 }
 
 projectsAccordion.addEventListener(
-  'transitionend',
-  setProjectsAccordionMaxHeight,
+  "transitionend",
+  setProjectsAccordionMaxHeight
 );

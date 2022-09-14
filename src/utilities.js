@@ -22,6 +22,7 @@ export function toggleEmptyState(projectIndex) {
     onlyTasksContainer = document.querySelector(
       `.main-content[data-project="${projectIndex}"] section:only-of-type .tasks-items`,
     );
+    toggleEmptyState('today');
   }
 
   const disabledCompletedTasks = document.querySelector(
