@@ -10,7 +10,10 @@ export const projectCreate = (() => {
     const sections = [section];
     const comments = [];
     return {
-      title, color, sections, comments,
+      title,
+      color,
+      sections,
+      comments,
     };
   };
 
@@ -19,15 +22,18 @@ export const projectCreate = (() => {
     const completedTasks = [];
     const expanded = true;
     return {
-      title, tasks, completedTasks, expanded,
+      title,
+      tasks,
+      completedTasks,
+      expanded,
     };
   };
 
   const newTask = (title, description, dueDate, priority) => {
     const completed = false;
     const creationDate = new Date();
-    const todayID = '';
-    const overdueID = '';
+    const todayID = "";
+    const overdueID = "";
     return {
       title,
       description,
@@ -46,21 +52,25 @@ export const projectCreate = (() => {
   };
 
   return {
-    defaultSection, newSection, newTask, newProject, newComment,
+    defaultSection,
+    newSection,
+    newTask,
+    newProject,
+    newComment,
   };
 })();
 
 export let toDoProjects;
 
 const initializeToDoProjects = (() => {
-  const savedToDoProjects = JSON.parse(localStorage.getItem('toDoProjects'));
+  const savedToDoProjects = JSON.parse(localStorage.getItem("toDoProjects"));
 
   if (savedToDoProjects !== null) {
     toDoProjects = savedToDoProjects;
   } else {
     toDoProjects = (() => {
       const inbox = (() => {
-        const title = 'Inbox';
+        const title = "Inbox";
         const section = projectCreate.defaultSection();
         const sections = [section];
         const comments = [];
@@ -82,7 +92,7 @@ const initializeToDoProjects = (() => {
 
 export function addTodayTask(task) {
   const { overdueID } = task;
-  if (overdueID !== '') {
+  if (overdueID !== "") {
     deleteOverdueTask(overdueID);
   }
 
@@ -105,20 +115,21 @@ export function updateOverdueTasksIndixes() {
 }
 
 export function deleteTodayTask(todayID) {
-  toDoProjects.today.tasks[todayID].todayID = '';
+  toDoProjects.today.tasks[todayID].todayID = "";
   toDoProjects.today.tasks.splice(todayID, 1);
   updateTodayTasksIndixes();
 }
 
 export function deleteOverdueTask(overdueID) {
-  toDoProjects.today.overdueTasks[overdueID].overdueID = '';
+  toDoProjects.today.overdueTasks[overdueID].overdueID = "";
   toDoProjects.today.overdueTasks.splice(overdueID, 1);
   updateOverdueTasksIndixes();
 }
 
 export function getNewTodayTaskID(task) {
-  const firstGreaterDate = (todayTask) => todayTask.dueDate > task.dueDate
-    || todayTask.creationDate > task.creationDate;
+  const firstGreaterDate = (todayTask) =>
+    todayTask.dueDate > task.dueDate ||
+    todayTask.creationDate > task.creationDate;
   let taskIndex = toDoProjects.today.tasks.findIndex(firstGreaterDate);
   if (taskIndex === -1) {
     taskIndex = toDoProjects.today.tasks.length;
@@ -130,9 +141,10 @@ export function getNewTodayTaskID(task) {
 export function getNewOverdueTaskID(task) {
   const { overdueTasks } = toDoProjects.today;
 
-  const firstGreaterDuedate = (overdueTask) => overdueTask.dueDate > task.dueDate
-    || (overdueTask.dueDate.startOf('day').ts === task.dueDate.startOf('day').ts
-      && overdueTask.creationDate < task.creationDate);
+  const firstGreaterDuedate = (overdueTask) =>
+    overdueTask.dueDate > task.dueDate ||
+    (overdueTask.dueDate.startOf("day").ts === task.dueDate.startOf("day").ts &&
+      overdueTask.creationDate < task.creationDate);
 
   let taskIndex = overdueTasks.findIndex(firstGreaterDuedate);
 
@@ -144,7 +156,7 @@ export function getNewOverdueTaskID(task) {
 }
 
 export function saveToDoProjects() {
-  localStorage.setItem('toDoProjects', JSON.stringify(toDoProjects));
+  localStorage.setItem("toDoProjects", JSON.stringify(toDoProjects));
 }
 
 setTimeout(() => {

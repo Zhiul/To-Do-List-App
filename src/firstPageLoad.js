@@ -1,6 +1,6 @@
-import { format } from 'date-fns';
-import * as OverlayScrollbars from 'overlayscrollbars';
-import { isMobile } from './mobile';
+import { format } from "date-fns";
+import * as OverlayScrollbars from "overlayscrollbars";
+import { isMobile } from "./mobile";
 import {
   toDoProjects,
   addTodayTask,
@@ -8,62 +8,63 @@ import {
   updateOverdueTasksIndixes,
   getNewTodayTaskID,
   getNewOverdueTaskID,
-} from './logic.js';
-import { addTaskBoxEventListeners } from './task';
+} from "./logic.js";
+import { addTaskBoxEventListeners } from "./task";
 import {
   toggleEmptyState,
   updateProjectTasksNumber,
   toggleShowTodaySections,
   loadAllProjectsSectionsDropdownElements,
   main,
-} from './utilities';
+} from "./utilities";
 import {
   createElementFromTemplate,
   createProjectTemplate,
   createSectionTemplate,
   createTaskTemplate,
   createProjectSidebarTemplate,
-} from './elementsTemplates.js';
+} from "./elementsTemplates.js";
 import {
   addSetSectionsMaxHeightEL,
   sidebarProjectsList,
   addSetCompletedTasksContainerMaxHeightEL,
-} from './project.js';
+} from "./project.js";
 
-const { DateTime } = require('luxon');
+const { DateTime } = require("luxon");
 
 export { firstPageLoad };
 
-document.addEventListener('DOMContentLoaded', () => {
-  const loadingScreenElement = document.querySelector('.loading-screen');
-  loadingScreenElement.classList.add('fade');
+document.addEventListener("DOMContentLoaded", () => {
+  const loadingScreenElement = document.querySelector(".loading-screen");
+  loadingScreenElement.classList.add("fade");
   setTimeout(() => {
     loadingScreenElement.remove();
   }, 300);
 });
 
-const mainObserver = new MutationObserver(
-  (mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === 'childList') {
-        const classNames = [
-          'main-to-do-list',
-          'tasks-items',
-          'completed-tasks-items',
-        ];
+const mainObserver = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.type === "childList") {
+      const classNames = [
+        "main-to-do-list",
+        "tasks-items",
+        "completed-tasks-items",
+      ];
 
-        if (
-          classNames.some((className) => mutation.target.classList.contains(className))
-        ) {
-          const projectIndex = mutation.target.closest('[data-project]').dataset.project;
-          if (projectIndex !== 'today') {
-            toggleEmptyState(projectIndex);
-          }
+      if (
+        classNames.some((className) =>
+          mutation.target.classList.contains(className)
+        )
+      ) {
+        const projectIndex =
+          mutation.target.closest("[data-project]").dataset.project;
+        if (projectIndex !== "today") {
+          toggleEmptyState(projectIndex);
         }
       }
-    });
-  },
-);
+    }
+  });
+});
 
 const config = {
   attributes: true,
@@ -79,8 +80,9 @@ function sortTasksElements(container, reverse, dataAttribute) {
 
   Array.from(container.children)
     .sort(
-      (a, b) => order * parseInt(a.dataset[dataAttribute])
-        - order * parseInt(b.dataset[dataAttribute]),
+      (a, b) =>
+        order * parseInt(a.dataset[dataAttribute]) -
+        order * parseInt(b.dataset[dataAttribute])
     )
     .forEach((element) => container.appendChild(element));
 }
@@ -113,8 +115,8 @@ const loadOverdueTasks = () => {
 
     updateTaskDueDateAccordingToTimezone(task);
 
-    if (task.dueDate.startOf('day').ts === today.startOf('day').ts) {
-      task.overdueID = '';
+    if (task.dueDate.startOf("day").ts === today.startOf("day").ts) {
+      task.overdueID = "";
       const todayTask = tasks.splice(overdueID, 1).pop();
       updateOverdueTasksIndixes();
 
@@ -138,8 +140,8 @@ const loadTodayTasks = () => {
 
     updateTaskDueDateAccordingToTimezone(task);
 
-    if (task.dueDate.startOf('day') < today.startOf('day')) {
-      task.todayID = '';
+    if (task.dueDate.startOf("day") < today.startOf("day")) {
+      task.todayID = "";
       const overdueTask = tasks.splice(todayID, 1).pop();
       updateTodayTasksIndixes();
 
@@ -148,20 +150,20 @@ const loadTodayTasks = () => {
       overdueTask.overdueID = taskIndex;
       overdueTasks.splice(taskIndex, 0, overdueTask);
       updateOverdueTasksIndixes();
-    } else if (task.dueDate.startOf('day') > today.startOf('day')) {
-      task.todayID = '';
+    } else if (task.dueDate.startOf("day") > today.startOf("day")) {
+      task.todayID = "";
       tasks.splice(todayID, 1);
       updateTodayTasksIndixes();
     }
   }
 };
 
-const homeButton = document.querySelector('#home-button');
-homeButton.addEventListener('click', openTodayProject);
+const homeButton = document.querySelector("#home-button");
+homeButton.addEventListener("click", openTodayProject);
 
 function openTodayProject() {
   const todayItem = document.querySelector(
-    '.sidebar-item[data-project="today"]',
+    '.sidebar-item[data-project="today"]'
   );
   todayItem.click();
 }
@@ -187,10 +189,10 @@ function updateTasksInRealTime() {
                 const { dueDate } = task;
                 const today = DateTime.local();
 
-                if (dueDate !== '') {
+                if (dueDate !== "") {
                   if (
-                    dueDate.startOf('day').ts === today.startOf('day').ts
-                    && todayID === ''
+                    dueDate.startOf("day").ts === today.startOf("day").ts &&
+                    todayID === ""
                   ) {
                     addTodayTask(task);
                   }
@@ -203,37 +205,39 @@ function updateTasksInRealTime() {
 
       const changeTodayProjectDatesElements = (() => {
         const todayTasksSectionTitle = document.querySelector(
-          '[data-project="today"] [data-section="0"] .section-title',
+          '[data-project="today"] [data-section="0"] .section-title'
         );
         const todayIconText = document.querySelector(
-          '[data-project="today"] text tspan',
+          '[data-project="today"] text tspan'
         );
 
-        todayIconText.textContent = `${format(new Date(), 'dd')}`;
+        todayIconText.textContent = `${format(new Date(), "dd")}`;
         todayTasksSectionTitle.textContent = `${format(
           new Date(),
-          'LLL d',
+          "LLL d"
         )} ‧ Today`;
-        updateProjectTasksNumber('today');
+        updateProjectTasksNumber("today");
       })();
 
       const updateTodayProjectElements = (() => {
         const todaySectionTasksContainer = document.querySelector(
-          '[data-project="today"] [data-section="0"] .tasks-items',
+          '[data-project="today"] [data-section="0"] .tasks-items'
         );
 
         const overdueSectionTasksContainer = document.querySelector(
-          '[data-section="overdue"] .tasks-items',
+          '[data-section="overdue"] .tasks-items'
         );
 
-        const newOverdueSectionTasksContainer = overdueSectionTasksContainer.cloneNode();
+        const newOverdueSectionTasksContainer =
+          overdueSectionTasksContainer.cloneNode();
 
-        const newTodaySectionTasksContainer = todaySectionTasksContainer.cloneNode();
+        const newTodaySectionTasksContainer =
+          todaySectionTasksContainer.cloneNode();
 
-        const taskElements = document.querySelectorAll('.task-item');
+        const taskElements = document.querySelectorAll(".task-item");
         taskElements.forEach((task) => {
-          task.removeAttribute('data-overdue-id');
-          task.removeAttribute('data-today-id');
+          task.removeAttribute("data-overdue-id");
+          task.removeAttribute("data-today-id");
         });
 
         toDoProjects.projects.forEach((project, projectIndex) => {
@@ -243,15 +247,15 @@ function updateTasksInRealTime() {
               const { overdueID } = task;
 
               const taskElementInProject = document.querySelector(
-                `[data-project="${projectIndex}"] [data-section="${sectionIndex}"] [data-task-index="${index}"]`,
+                `[data-project="${projectIndex}"] [data-section="${sectionIndex}"] [data-task-index="${index}"]`
               );
 
-              if (todayID !== '') {
+              if (todayID !== "") {
                 taskElementInProject.dataset.todayId = todayID;
                 const taskTemplate = createTaskTemplate(task, index);
                 const taskElement = createElementFromTemplate(taskTemplate);
                 newTodaySectionTasksContainer.appendChild(taskElement);
-              } else if (overdueID !== '') {
+              } else if (overdueID !== "") {
                 taskElementInProject.dataset.overdueId = overdueID;
                 const taskTemplate = createTaskTemplate(task, index);
                 const taskElement = createElementFromTemplate(taskTemplate);
@@ -261,12 +265,12 @@ function updateTasksInRealTime() {
           });
         });
 
-        sortTasksElements(newTodaySectionTasksContainer, false, 'todayId');
-        sortTasksElements(newOverdueSectionTasksContainer, false, 'overdueId');
+        sortTasksElements(newTodaySectionTasksContainer, false, "todayId");
+        sortTasksElements(newOverdueSectionTasksContainer, false, "overdueId");
 
         todaySectionTasksContainer.replaceWith(newTodaySectionTasksContainer);
         overdueSectionTasksContainer.replaceWith(
-          newOverdueSectionTasksContainer,
+          newOverdueSectionTasksContainer
         );
       })();
 
@@ -285,48 +289,49 @@ function updateTasksInRealTime() {
                 let dueDateClass;
                 let dueDateContent;
 
-                if (dueDate.startOf('day').ts === today.startOf('day').ts) {
-                  dueDateClass = 'today';
-                  dueDateContent = 'Today';
+                if (dueDate.startOf("day").ts === today.startOf("day").ts) {
+                  dueDateClass = "today";
+                  dueDateContent = "Today";
                 } else if (dueDate.year === today.year) {
-                  dueDateClass = 'date';
-                  dueDateContent = format(dueDate.toJSDate(), 'LLL d');
+                  dueDateClass = "date";
+                  dueDateContent = format(dueDate.toJSDate(), "LLL d");
                 } else {
-                  dueDateClass = 'date';
-                  dueDateContent = format(dueDate.toJSDate(), 'LLL d uuuu');
+                  dueDateClass = "date";
+                  dueDateContent = format(dueDate.toJSDate(), "LLL d uuuu");
                 }
 
                 if (dueDate < now) {
-                  dueDateClass = 'overdue';
+                  dueDateClass = "overdue";
                 }
 
                 const changeTaskDuedateElement = (() => {
                   let taskElement;
                   if (completed) {
                     taskElement = document.querySelector(
-                      `[data-project="${projectIndex}"] [data-section="${sectionIndex}"] [data-task-index="${taskIndex}"].completed`,
+                      `[data-project="${projectIndex}"] [data-section="${sectionIndex}"] [data-task-index="${taskIndex}"].completed`
                     );
                   } else {
                     taskElement = document.querySelector(
-                      `[data-project="${projectIndex}"] [data-section="${sectionIndex}"] [data-task-index="${taskIndex}"]`,
+                      `[data-project="${projectIndex}"] [data-section="${sectionIndex}"] [data-task-index="${taskIndex}"]`
                     );
                   }
 
                   const taskDueDateButton = taskElement.querySelector(
-                    '.task-duedate-button',
+                    ".task-duedate-button"
                   );
                   const taskDueDateContent = taskElement.querySelector(
-                    '.task-duedate-content',
+                    ".task-duedate-content"
                   );
-                  const timezoneElement = taskElement.querySelector('.timezone');
+                  const timezoneElement =
+                    taskElement.querySelector(".timezone");
 
                   taskDueDateButton.classList.value = `task-duedate-button active ${dueDateClass}`;
                   taskDueDateContent.textContent = dueDateContent;
 
                   if (dueDateTimeZone === actualTimezone) {
-                    timezoneElement.classList.value = 'timezone disabled';
+                    timezoneElement.classList.value = "timezone disabled";
                   } else {
-                    timezoneElement.classList.value = 'timezone active';
+                    timezoneElement.classList.value = "timezone active";
                   }
                 })();
               }
@@ -354,7 +359,7 @@ function updateTasksInRealTime() {
   }
 
   function updateTasksIfNewTimezone(
-    previousTimezone = DateTime.local().zoneName,
+    previousTimezone = DateTime.local().zoneName
   ) {
     const actualTimeZone = DateTime.local().zoneName;
 
@@ -390,26 +395,28 @@ function updateTasksInRealTime() {
 
         const changeTaskElementDuedateStatus = (() => {
           const taskElement = document.querySelector(
-            `[data-project]:not([data-project="today"]) [data-today-id="${todayID}"]`,
+            `[data-project]:not([data-project="today"]) [data-today-id="${todayID}"]`
           );
 
           const taskDueDateButton = taskElement.querySelector(
-            '.task-duedate-button',
+            ".task-duedate-button"
           );
 
-          taskDueDateButton.classList.value = 'task-duedate-button active overdue';
+          taskDueDateButton.classList.value =
+            "task-duedate-button active overdue";
         })();
 
         const changeTodayTaskElementDueDateStatus = (() => {
           const todayTaskElement = document.querySelector(
-            `[data-project="today"] [data-today-id="${todayID}"]`,
+            `[data-project="today"] [data-today-id="${todayID}"]`
           );
 
           const taskDueDateButton = taskElement.querySelector(
-            '.task-duedate-button',
+            ".task-duedate-button"
           );
 
-          taskDueDateButton.classList.value = 'task-duedate-button active overdue';
+          taskDueDateButton.classList.value =
+            "task-duedate-button active overdue";
         })();
       }
     });
@@ -426,34 +433,35 @@ function updateTasksInRealTime() {
 const firstPageLoad = (() => {
   (function addMobileAndTabletStyles() {
     if (isMobile) {
-
     } else {
-      document.querySelector('#mobile-stylesheet').remove();
+      document.querySelector("#mobile-stylesheet").remove();
     }
-  }());
+  })();
 
   function watchForHover() {
     let lastTouchTime = 0;
 
     function enableHover() {
       if (
-        new Date() - lastTouchTime < 500
-        || document.querySelector('*:active')
-      ) { return; }
-      document.body.classList.add('no-touch');
+        new Date() - lastTouchTime < 500 ||
+        document.querySelector("*:active")
+      ) {
+        return;
+      }
+      document.body.classList.add("no-touch");
     }
 
     function disableHover() {
-      document.body.classList.remove('no-touch');
+      document.body.classList.remove("no-touch");
     }
 
     function updateLastTouchTime() {
       lastTouchTime = new Date();
     }
 
-    document.addEventListener('touchstart', updateLastTouchTime, true);
-    document.addEventListener('touchstart', disableHover, true);
-    document.addEventListener('mousemove', enableHover, true);
+    document.addEventListener("touchstart", updateLastTouchTime, true);
+    document.addEventListener("touchstart", disableHover, true);
+    document.addEventListener("mousemove", enableHover, true);
 
     enableHover();
   }
@@ -462,17 +470,22 @@ const firstPageLoad = (() => {
 
   addTaskBoxEventListeners();
   const selectProjectSectionDropdown = document.querySelector(
-    '.select-project-section-dropdown-content ul',
+    ".select-project-section-dropdown-content ul"
   );
   loadAllProjectsSectionsDropdownElements(selectProjectSectionDropdown);
   updateTasksInRealTime();
-  OverlayScrollbars(document.querySelector('.sidebar'), {});
+  OverlayScrollbars(document.querySelector(".sidebar"), {
+    overflowBehavior: {
+      x: "scroll",
+      y: "scroll",
+    },
+  });
 
   const todayTasksContainer = document.querySelector(
-    '.main-content[data-project="today"] [data-section="0"] .tasks-items',
+    '.main-content[data-project="today"] [data-section="0"] .tasks-items'
   );
   const overdueTasksContainer = document.querySelector(
-    '.main-content[data-project="today"] [data-section="overdue"] .tasks-items',
+    '.main-content[data-project="today"] [data-section="overdue"] .tasks-items'
   );
 
   const linkTodayProjectTasksToProjects = (() => {
@@ -480,12 +493,12 @@ const firstPageLoad = (() => {
       const { tasks } = section;
 
       tasks.forEach((task, index, tasks) => {
-        if (task.todayID !== '') {
+        if (task.todayID !== "") {
           const { todayID } = task;
           tasks[index] = toDoProjects.today.tasks[todayID];
         }
 
-        if (task.overdueID !== '') {
+        if (task.overdueID !== "") {
           const { overdueID } = task;
           tasks[index] = toDoProjects.today.overdueTasks[overdueID];
         }
@@ -519,14 +532,14 @@ const firstPageLoad = (() => {
 
   function addSectionToTheDOM(section, sectionIndex, projectIndex) {
     const projectElement = document.querySelector(
-      `.main-content[data-project="${projectIndex}"] .main-to-do-list`,
+      `.main-content[data-project="${projectIndex}"] .main-to-do-list`
     );
 
     let expandStatus;
     if (section.expanded === true) {
-      expandStatus = 'active';
+      expandStatus = "active";
     } else {
-      expandStatus = 'disabled';
+      expandStatus = "disabled";
     }
 
     let sectionTasksContainer;
@@ -534,32 +547,32 @@ const firstPageLoad = (() => {
 
     if (sectionIndex === 0) {
       sectionTasksContainer = projectElement.querySelector(
-        'section[data-section="0"] .tasks-items',
+        'section[data-section="0"] .tasks-items'
       );
       sectionCompletedTasksContainer = projectElement.querySelector(
-        'section[data-section="0"] .completed-tasks-items',
+        'section[data-section="0"] .completed-tasks-items'
       );
     } else {
       const sectionTitle = section.title;
       const sectionTemplate = createSectionTemplate(
         sectionIndex,
         sectionTitle,
-        expandStatus,
+        expandStatus
       );
       const sectionElement = createElementFromTemplate(sectionTemplate);
       projectElement.appendChild(sectionElement);
 
       sectionTasksContainer = projectElement.querySelector(
-        `section[data-section="${sectionIndex}"] .tasks-items`,
+        `section[data-section="${sectionIndex}"] .tasks-items`
       );
       sectionCompletedTasksContainer = projectElement.querySelector(
-        `section[data-section="${sectionIndex}"] .completed-tasks-items`,
+        `section[data-section="${sectionIndex}"] .completed-tasks-items`
       );
     }
 
     section.tasks.forEach((task, index) => {
       task.creationDate = new Date(task.creationDate);
-      if (task.dueDate !== '') {
+      if (task.dueDate !== "") {
         task.dueDate = DateTime.fromISO(task.dueDate);
       }
 
@@ -574,7 +587,7 @@ const firstPageLoad = (() => {
         dueDate = task.dueDate;
 
         const addTaskToTodayProject = (() => {
-          if (dueDate.startOf('day') < now.startOf('day') && overdueID === '') {
+          if (dueDate.startOf("day") < now.startOf("day") && overdueID === "") {
             const taskIndex = getNewOverdueTaskID(task);
 
             task.overdueID = taskIndex;
@@ -586,8 +599,8 @@ const firstPageLoad = (() => {
 
             overdueID = taskIndex;
           } else if (
-            dueDate.startOf('day').ts === now.startOf('day').ts
-            && todayID === ''
+            dueDate.startOf("day").ts === now.startOf("day").ts &&
+            todayID === ""
           ) {
             addTodayTask(task);
             todayID = task.todayID;
@@ -602,21 +615,21 @@ const firstPageLoad = (() => {
       })();
 
       const addTaskElementToTodayProject = (() => {
-        if (todayID !== '') {
+        if (todayID !== "") {
           const taskTemplate = createTaskTemplate(task, index);
           const taskElement = createElementFromTemplate(taskTemplate);
           todayTasksContainer.appendChild(taskElement);
 
-          const projectIndex = 'today';
+          const projectIndex = "today";
           updateProjectTasksNumber(projectIndex);
         }
 
-        if (overdueID !== '') {
+        if (overdueID !== "") {
           const taskTemplate = createTaskTemplate(task, index);
           const taskElement = createElementFromTemplate(taskTemplate);
           overdueTasksContainer.appendChild(taskElement);
 
-          const projectIndex = 'today';
+          const projectIndex = "today";
           updateProjectTasksNumber(projectIndex);
         }
       })();
@@ -624,7 +637,7 @@ const firstPageLoad = (() => {
 
     section.completedTasks.forEach((task, index) => {
       task.creationDate = new Date(task.creationDate);
-      if (task.dueDate !== '') {
+      if (task.dueDate !== "") {
         task.dueDate = DateTime.fromISO(task.dueDate);
       }
 
@@ -646,7 +659,7 @@ const firstPageLoad = (() => {
       const projectTemplate = createProjectTemplate(
         title,
         projectIndex,
-        commentsNumber,
+        commentsNumber
       );
 
       const projectElement = createElementFromTemplate(projectTemplate);
@@ -667,12 +680,12 @@ const firstPageLoad = (() => {
         });
 
         if (tasksNumber === 0) {
-          tasksNumber = '';
+          tasksNumber = "";
         }
 
         if (projectIndex === 0) {
           const tasksNumberElement = document.querySelector(
-            '.main-filters-item[data-project="0"] .item-number',
+            '.main-filters-item[data-project="0"] .item-number'
           );
           tasksNumberElement.textContent = tasksNumber;
         } else {
@@ -680,11 +693,11 @@ const firstPageLoad = (() => {
             projectIndex,
             color,
             title,
-            tasksNumber,
+            tasksNumber
           );
 
           const projectSidebarElement = createElementFromTemplate(
-            projectSidebarTemplate,
+            projectSidebarTemplate
           );
 
           sidebarProjectsList.appendChild(projectSidebarElement);
@@ -704,28 +717,28 @@ const firstPageLoad = (() => {
     });
 
     const tasksNumberElement = document.querySelector(
-      '.main-filters-item[data-project="today"] .item-number',
+      '.main-filters-item[data-project="today"] .item-number'
     );
 
     const todayIconText = document.querySelector(
-      '[data-project="today"] text tspan',
+      '[data-project="today"] text tspan'
     );
-    todayIconText.textContent = `${format(new Date(), 'dd')}`;
+    todayIconText.textContent = `${format(new Date(), "dd")}`;
 
     if (itemsNumber === 0) {
-      itemsNumber = '';
+      itemsNumber = "";
     }
     tasksNumberElement.textContent = itemsNumber;
 
     const sectionTitle = document.querySelector(
-      '[data-project="today"] [data-section="0"] .section-title',
+      '[data-project="today"] [data-section="0"] .section-title'
     );
-    sectionTitle.textContent = `${format(new Date(), 'LLL d')} ‧ Today`;
+    sectionTitle.textContent = `${format(new Date(), "LLL d")} ‧ Today`;
   })();
 
-  sortTasksElements(todayTasksContainer, false, 'todayId');
-  sortTasksElements(overdueTasksContainer, false, 'overdueId');
+  sortTasksElements(todayTasksContainer, false, "todayId");
+  sortTasksElements(overdueTasksContainer, false, "overdueId");
 
   toggleShowTodaySections();
-  toggleEmptyState('today');
+  toggleEmptyState("today");
 })();

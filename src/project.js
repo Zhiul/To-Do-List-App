@@ -258,6 +258,7 @@ document.addEventListener("click", (event) => {
 document.addEventListener("click", (event) => {
   if (event.target.matches(".toggle-completed-tasks")) {
     const toggleCompletedTasksButton = event.target;
+    const sections = document.querySelectorAll(".main-content.enabled section");
     const sectionsCompletedTasksContainers = document.querySelectorAll(
       ".main-content.enabled .completed-tasks-items"
     );
@@ -267,11 +268,25 @@ document.addEventListener("click", (event) => {
         toggleCompletedTasksButton.classList.toggle("hide");
       }, 100);
 
+      sections.forEach((container) => {
+        container.style.transform = "scale(1.00000000000001)";
+      });
+
       sectionsCompletedTasksContainers.forEach((container) => {
         container.classList.remove("active");
         container.classList.add("disabled");
         container.style.maxHeight = `${container.scrollHeight}px`;
       });
+
+      setTimeout(() => {
+        sectionsCompletedTasksContainers.forEach((container) => {
+          container.style.maxHeight = "";
+        });
+
+        sections.forEach((container) => {
+          container.style.transform = "";
+        });
+      }, 250);
     } else {
       setTimeout(() => {
         toggleCompletedTasksButton.classList.toggle("hide");
@@ -281,6 +296,12 @@ document.addEventListener("click", (event) => {
         container.classList.remove("disabled");
         container.classList.add("active");
       });
+
+      setTimeout(() => {
+        sectionsCompletedTasksContainers.forEach((container) => {
+          container.style.maxHeight = "";
+        });
+      }, 250);
     }
     const projectIndex = document.querySelector(".main-content.enabled").dataset
       .project;
@@ -1348,16 +1369,22 @@ document.addEventListener("click", (event) => {
     );
     if (previusProjectContainer !== currentProjectContainer) {
       main.scrollTo({ top: 0 });
-      previusProjectContainer.classList.remove("enabled");
+      if (previusProjectContainer) {
+        previusProjectContainer.classList.remove("enabled");
 
-      function setDisplayNone() {
-        previusProjectContainer.style.display = "none";
+        function setDisplayNone() {
+          previusProjectContainer.style.display = "none";
+        }
+
+        previusProjectContainer.addEventListener(
+          "animationend",
+          setDisplayNone,
+          {
+            once: true,
+          }
+        );
+        previusProjectContainer.classList.add("disabled");
       }
-
-      previusProjectContainer.addEventListener("animationend", setDisplayNone, {
-        once: true,
-      });
-      previusProjectContainer.classList.add("disabled");
     }
 
     currentSidebarElement.classList.add("selected");

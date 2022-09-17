@@ -18,6 +18,20 @@
   }
 }
 
+@keyframes fixJarring {
+  from {
+    transform: translateY(-1px);
+  }
+
+  to {
+    transform: translateY(0px);
+  }
+}
+
+.fix-jarring {
+  animation: fixJarring 20ms infinite;
+}
+
 .modal {
   opacity: 0;
   transition: opacity 140ms ease-in-out;
@@ -249,6 +263,7 @@ nav {
   opacity: 0.6;
   box-shadow: 1px 1px 10px 1px #00000021;
   transform-origin: top left;
+  overflow: overlay;
 }
 
 .sidebar.open {
@@ -283,10 +298,68 @@ nav {
   padding: 18px 5px 18px 35px;
 }
 
+@keyframes sidebarItemAppearing {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes sidebarItemDisappearing {
+  from {
+    transform: scale(1);
+    max-height: calc(1.25rem + 16px);
+    padding: 8px 0px;
+    margin-bottom: 6px;
+  }
+
+  to {
+    transform: scale(0);
+    max-height: 0px;
+    padding: 0px;
+    margin-bottom: 0px;
+  }
+}
+
+@keyframes blurTransition {
+  from {
+    backdrop-filter: blur(2px);
+    opacity: 1;
+  }
+
+  to {
+    backdrop-filter: blur(2px);
+    opacity: 0;
+  }
+}
+
 .sidebar-item {
   margin-bottom: 6px;
   transition: 100ms ease-in-out;
   border-radius: 12px;
+  position: relative;
+  animation: sidebarItemAppearing 400ms ease-in-out;
+  transform-origin: top center;
+  --blurAnimation: blurTransition 500ms ease-in-out reverse;
+}
+
+.sidebar-item.disappearing {
+  overflow: hidden;
+  animation: sidebarItemDisappearing 400ms ease-in-out;
+}
+
+.sidebar-item::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  animation: blurTransition 500ms ease-in-out;
 }
 
 .sidebar-item * {
@@ -421,6 +494,7 @@ nav {
   overflow: hidden;
   opacity: 0;
   transition: all 0.15s ease-in-out;
+  margin-bottom: 140px;
 }
 
 .project-item {
@@ -708,11 +782,6 @@ main.main-transition-effect {
   scrollbar-width: none;
 }
 
-.sidebar.open ~ main {
-  width: calc(100vw - 305px);
-  transform-origin: top left;
-}
-
 @media screen and (min-width: 1260px) {
   .sidebar {
     transition: opacity 200ms cubic-bezier(0.79, 0.15, 0.53, 1.04),
@@ -849,19 +918,25 @@ main.main-transition-effect::-webkit-scrollbar {
   z-index: 3;
 }
 
+.main-header.pinned::after {
+  opacity: 1;
+}
+
 .main-header::after {
   content: "";
+  transition: opacity 100ms ease-in-out;
+  opacity: 0;
   display: block;
   position: absolute;
   bottom: 0;
   height: 1px;
   width: calc(100% - 112px);
-  border-bottom: 1px solid #f0f0f0;
+  box-shadow: 0px 3px 2px 1px rgb(0 0 0 / 7%);
 }
 
 .main-title {
   font-weight: bold;
-  font-size: 21.47px;
+  font-size: 1.341875rem;
 }
 
 .main-icons {
@@ -1092,6 +1167,10 @@ button.project-comments {
 }
 
 /* Task */
+
+.task-items {
+  transition: transform 10ms ease-in-out;
+}
 
 .task-item {
   position: relative;
@@ -1727,13 +1806,16 @@ button.project-comments {
 
 @keyframes taskBoxContainerAppearing {
   from {
-    max-height: 75px;
+    overflow: hidden;
+    max-height: 0px;
     opacity: 0.48;
-    transform: scaleX(0.7) scaleY(0.6);
+    transform: scale(0);
+    filter: blur(0.5px);
   }
 
   to {
-    max-height: 179px;
+    overflow: hidden;
+    max-height: 200px;
     opacity: 1;
     transform: scaleX(1) scaleY(1);
   }
@@ -1852,15 +1934,19 @@ button.project-comments {
 
 @keyframes editTaskBoxAppearing {
   0% {
-    filter: blur(1.5px);
     overflow: hidden;
     opacity: 0;
+    filter: blur(1.5px);
     max-height: 0px;
   }
 
   70% {
     max-height: 370px;
     overflow: hidden;
+  }
+
+  80% {
+    filter: blur(0.5px);
   }
 
   100% {
@@ -2244,101 +2330,63 @@ span.flatpickr-weekday {
   visibility: visible;
 }
 
-@keyframes downArrowFadeInDown {
+@keyframes arrowFadeIn {
   from {
     opacity: 0;
-    transform: translate(calc(-50% - 9px), 11px) rotate(270deg)
-      translate3d(12px, 0, 0);
+    transform: translate(var(--translateX), var(--translateY))
+      rotate(var(--rotate)) translate3d(var(--translate3dX), 0, 0);
   }
   to {
     opacity: 1;
-    transform: translate(calc(-50% - 9px), 11px) rotate(270deg)
-      translate3d(0, 0, 0);
-  }
-}
-
-@keyframes upArrowFadeInDown {
-  from {
-    opacity: 0;
-    transform: translate(calc(-50% + 9px), -42px) rotate(90deg)
-      translate3d(-12px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate(calc(-50% + 9px), -42px) rotate(90deg)
-      translate3d(0, 0, 0);
-  }
-}
-
-@keyframes arrowFadeInRight {
-  from {
-    opacity: 0;
-    transform: translateY(-11px) rotate(180deg) translate3d(8px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-11px) rotate(180deg) translate3d(0, 0, 0);
-  }
-}
-
-@-webkit-keyframes arrowFadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateY(-24px) rotate(0deg) translate3d(8px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-24px) rotate(0deg) translate3d(0, 0, 0);
-  }
-}
-@keyframes arrowFadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateY(-24px) rotate(0deg) translate3d(8px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-24px) rotate(0deg) translate3d(0, 0, 0);
+    transform: translate(var(--translateX), var(--translateY))
+      rotate(var(--rotate)) translate3d(0, 0, 0);
   }
 }
 
 .select-project-section-dropdown-content.show ~ .arrow {
   display: block;
-  -webkit-animation: downArrowFadeInDown 300ms cubic-bezier(0.23, 1, 0.32, 1);
-  animation: downArrowFadeInDown 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  animation: arrowFadeIn 300ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .select-project-section-dropdown-content.show.top ~ .arrow {
-  transform: translate(calc(-50% + 9px), -42px) rotate(90deg);
-  -webkit-animation: upArrowFadeInDown 300ms cubic-bezier(0.23, 1, 0.32, 1);
-  animation: upArrowFadeInDown 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  --translateX: calc(-50% + 9px);
+  --translateY: -43px;
+  --rotate: 90deg;
+  --translate3dX: -14px;
 }
 
 .select-project-section-dropdown-content.show.right ~ .arrow {
-  right: -10px;
+  --translateX: 0px;
+  --translateY: -11px;
+  --rotate: 180deg;
+  --translate3dX: 8px;
+  right: -11px;
   bottom: 0;
   left: 0;
-  transform: translateY(-11px) rotate(180deg);
-  -webkit-animation: arrowFadeInRight 300ms cubic-bezier(0.23, 1, 0.32, 1);
-  animation: arrowFadeInRight 300ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .select-project-section-dropdown-content.show.left ~ .arrow {
-  left: -10px;
+  --translateX: 0px;
+  --translateY: -24px;
+  --rotate: 0deg;
+  --translate3dX: 8px;
+  left: -11px;
   bottom: 0;
-  transform: translateY(-24px) rotate(0deg);
-  -webkit-animation: arrowFadeInLeft 300ms cubic-bezier(0.23, 1, 0.32, 1);
-  animation: arrowFadeInLeft 300ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .arrow {
+  --translateX: calc(-50% - 9px);
+  --translateY: 12px;
+  --rotate: 270deg;
+  --translate3dX: 12px;
   position: absolute;
   left: 50%;
   z-index: 1;
   display: none;
-  transform: translate(calc(-50% - 9px), 11px) rotate(270deg);
+  transform: translate(var(--translateX), var(--translateY))
+    rotate(var(--rotate));
   display: none;
-  z-index: 5;
+  z-index: 10;
 }
 
 .arrow::after {
@@ -2362,7 +2410,7 @@ span.flatpickr-weekday {
   border-left: 6px solid white;
   position: absolute;
   z-index: 1;
-  transform: translateX(-2px);
+  transform: translateX(-1px);
 }
 
 .project-section-item {
@@ -2640,7 +2688,6 @@ span.flatpickr-weekday {
 .section-top {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid var(--vLightGray);
   padding-top: 5px;
   padding-bottom: 5px;
   position: sticky;
@@ -2649,6 +2696,11 @@ span.flatpickr-weekday {
   margin-bottom: 11px;
   background: white;
   z-index: 2;
+  transition: 100ms ease-in-out box-shadow;
+}
+
+.section-top.pinned {
+  box-shadow: 2px 1px 2px 1px rgb(0 0 0 / 7%);
 }
 
 .section-top::after {
@@ -3024,7 +3076,7 @@ span.flatpickr-weekday {
 
 .task-item.appearing {
   opacity: 0;
-  animation: appearingFromCenter 335ms ease-in-out forwards;
+  animation: appearingFromCenter 335ms;
 }
 
 @keyframes transitioningMarginBottom {
@@ -3644,6 +3696,14 @@ input.section-title {
   opacity: 1;
 }
 
+@keyframes sectionBoxAppearing {
+  0% {
+  }
+
+  100% {
+  }
+}
+
 .add-section-box {
   margin-bottom: 40px;
 }
@@ -3785,6 +3845,11 @@ input.section-title {
 }
 
 @media (min-width: 740px) {
+  .sidebar.open ~ main {
+    width: calc(100vw - 305px);
+    transform-origin: top left;
+  }
+
   .add-task-box-container.main {
     max-width: 550px;
   }
@@ -3943,10 +4008,9 @@ input.section-title {
 @keyframes appearingFromCenter {
   0% {
     overflow: hidden;
-    transform: scale(0.85);
+    transform: translateY(-9px) scale(0.85);
     opacity: 0;
     max-height: 0px;
-    padding: 0px;
   }
 
   50% {
@@ -3956,7 +4020,7 @@ input.section-title {
   100% {
     max-height: var(--taskHeight);
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0px) scale(1);
   }
 }
 
