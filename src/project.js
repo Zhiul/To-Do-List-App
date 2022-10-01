@@ -488,6 +488,9 @@ document.addEventListener("click", (event) => {
 document.addEventListener("click", (event) => {
   if (event.target.matches(".add-section-hover")) {
     const addSectionHover = event.target;
+    const section = addSectionHover.closest("section");
+    const sectionIndex = parseInt(section.dataset.section);
+
     const addSectionHoverButtons =
       document.querySelectorAll(".add-section-hover");
     const addSectionBox = (() => {
@@ -502,7 +505,15 @@ document.addEventListener("click", (event) => {
         const addSectionBoxElement = createElementFromTemplate(
           addSectionBoxTemplate
         );
+
+        addSectionHover.style.display = "none";
         addSectionContainer.appendChild(addSectionBoxElement);
+        if (
+          !sectionIndex &&
+          section.nextElementSibling.matches(".empty-state.active")
+        ) {
+          section.dataset.hasSectionBox = true;
+        }
 
         const sectionTitleInput =
           addSectionContainer.querySelector(".section-title");
@@ -613,10 +624,20 @@ document.addEventListener("click", (event) => {
         cancelAddSectionButton.addEventListener("click", removeAddSectionBox);
         function removeAddSectionBox() {
           const addSectionBox = document.querySelector(".add-section-box");
+          const section = addSectionBox.closest("section");
+          const sectionIndex = parseInt(section.dataset.section);
+          const previousSectionBox = addSectionBox.previousElementSibling;
+          previousSectionBox.removeAttribute("style");
           addSectionBox.remove();
           addSectionHoverButtons.forEach((button) => {
             button.classList.remove("disabled");
           });
+          if (
+            !sectionIndex &&
+            section.nextElementSibling.matches(".empty-state.active")
+          ) {
+            section.dataset.hasSectionBox = false;
+          }
         }
       }
     })();
@@ -856,7 +877,6 @@ const projectColorDropdownItems = document.querySelectorAll(
 
 projectColorDropdownItems.forEach((button) => {
   button.addEventListener("click", () => {
-    const colorCircle = button.querySelector(".circle");
     const projectColorDropdownButton = button
       .closest(".project-color-dropdown")
       .querySelector(".project-color");
@@ -864,16 +884,10 @@ projectColorDropdownItems.forEach((button) => {
       .closest(".project-color-dropdown")
       .querySelector(".project-color-name");
 
-    const projectColorDropdownButtonCircle =
-      projectColorDropdownButton.querySelector(".circle");
-    projectColorDropdownButtonCircle.classList.value =
-      colorCircle.classList.value;
+    projectColorDropdownButton.dataset.color = button.dataset.color;
 
     const colorName = button.querySelector(".project-color-name-item");
     projectColorTitle.textContent = colorName.textContent;
-
-    projectColorDropdownButton.dataset.color =
-      colorCircle.classList.value.slice(7);
 
     projectColorDropdownItems.forEach((btn) => {
       if (btn === button) {
@@ -1194,12 +1208,8 @@ mainOverlay.addEventListener("click", toggleNav);
 function changeMenuIcon() {
   if (menuButton.classList.contains("open")) {
     menuButton.classList.replace("open", "close");
-    menuIcon.style.display = "none";
-    menuCloseIcon.style.display = "block";
   } else if (menuButton.classList.contains("close")) {
     menuButton.classList.replace("close", "open");
-    menuCloseIcon.style.display = "none";
-    menuIcon.style.display = "block";
   }
 }
 

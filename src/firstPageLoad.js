@@ -208,7 +208,7 @@ function updateTasksInRealTime() {
           '[data-project="today"] [data-section="0"] .section-title'
         );
         const todayIconText = document.querySelector(
-          '[data-project="today"] text tspan'
+          '[data-project="today"] text'
         );
 
         todayIconText.textContent = `${format(new Date(), "dd")}`;
@@ -448,11 +448,11 @@ const firstPageLoad = (() => {
       ) {
         return;
       }
-      document.body.classList.add("no-touch");
+      document.body.classList.add("desktop");
     }
 
     function disableHover() {
-      document.body.classList.remove("no-touch");
+      document.body.classList.remove("desktop");
     }
 
     function updateLastTouchTime() {
@@ -472,7 +472,6 @@ const firstPageLoad = (() => {
   const selectProjectSectionDropdown = document.querySelector(
     ".select-project-section-dropdown-content ul"
   );
-  loadAllProjectsSectionsDropdownElements(selectProjectSectionDropdown);
   updateTasksInRealTime();
   OverlayScrollbars(document.querySelector(".sidebar"), {
     overflowBehavior: {
@@ -720,9 +719,7 @@ const firstPageLoad = (() => {
       '.main-filters-item[data-project="today"] .item-number'
     );
 
-    const todayIconText = document.querySelector(
-      '[data-project="today"] text tspan'
-    );
+    const todayIconText = document.querySelector('[data-project="today"] text');
     todayIconText.textContent = `${format(new Date(), "dd")}`;
 
     if (itemsNumber === 0) {

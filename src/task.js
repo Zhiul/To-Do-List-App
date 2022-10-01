@@ -90,7 +90,6 @@ function updateTaskBoxInputs(taskBox, projectIndex) {
 
   const addTaskButton = taskBox.querySelector(".action-todo");
   addTaskButton.classList.remove("enabled");
-  initializeSelectProjectSectionDropdown();
 }
 
 const resetTaskbox = new Event("resetTaskbox");
@@ -173,30 +172,24 @@ function updateDueDate(scheduleInput, dueDateSelector, selectedDueDate) {
   }
 }
 
-function initializeSelectProjectSectionDropdown(
-  addTaskContainer,
-  projectIndex,
-  sectionIndex
-) {
+function initializeSelectProjectSectionDropdown(addTaskContainer) {
+  let projectIndex;
+  projectIndex = document.querySelector(".main-content.enabled").dataset
+    .project;
+  if (projectIndex === "today") {
+    projectIndex = "0";
+  }
+  let projectSectionDropdownElement;
   if (addTaskContainer) {
-    if (projectIndex === "today") {
-      projectIndex = "0";
-    }
-    const projectSectionDropdownElement = addTaskContainer.querySelector(
-      `.project-section-item[data-project="${projectIndex}"][data-section="${sectionIndex}"]`
+    projectSectionDropdownElement = document.querySelector(
+      `.add-task-box-container .project-section-item[data-project="${projectIndex}"][data-section="0"]`
     );
-    projectSectionDropdownElement.click();
   } else {
-    projectIndex = document.querySelector(".main-content.enabled").dataset
-      .project;
-    if (projectIndex === "today") {
-      projectIndex = "0";
-    }
-    const projectSectionDropdownElement = document.querySelector(
+    projectSectionDropdownElement = document.querySelector(
       `.add-task-box-container.main .project-section-item[data-project="${projectIndex}"][data-section="0"]`
     );
-    projectSectionDropdownElement.click();
   }
+  projectSectionDropdownElement.click();
 }
 
 const selectedProjectSectionDropdown = (() => {
@@ -307,8 +300,6 @@ const selectedProjectSectionDropdown = (() => {
     }
 
     if (repeatAnimation) {
-      resetAnimation(dropdown.nextElementSibling);
-      console.log("b");
       resetAnimation(dropdown);
     }
   }
@@ -541,6 +532,12 @@ document.addEventListener("click", (event) => {
       projectIndex = parseInt(projectIndex);
     }
     const sectionIndex = parseInt(section.dataset.section);
+    if (
+      !sectionIndex &&
+      section.nextElementSibling.matches(".empty-state.active")
+    ) {
+      section.dataset.hasTaskbox = true;
+    }
 
     saveTaskBoxTask();
 
@@ -562,13 +559,6 @@ document.addEventListener("click", (event) => {
     const selectProjectDropdown = addTaskContainer.querySelector(
       ".select-project-section-dropdown-content ul"
     );
-    loadAllProjectsSectionsDropdownElements(selectProjectDropdown);
-    initializeSelectProjectSectionDropdown(
-      addTaskContainer,
-      projectIndex,
-      sectionIndex
-    );
-
     addTaskBoxEventListeners();
   }
 });
@@ -584,10 +574,12 @@ document.addEventListener("click", (event) => {
     )
       ? "add-taskbox"
       : "edit-taskbox";
+    const section = taskBoxContainer.closest("section");
     let delay;
 
     resetAnimation(taskBoxContainer);
     taskBoxContainer.classList.add("disappearing");
+    if (section.dataset.section == 0) section.dataset.hasTaskbox = "false";
 
     if (taskBoxType === "add-taskbox") {
       delay = 255;
@@ -604,7 +596,7 @@ document.addEventListener("click", (event) => {
         taskItem.style.willChange = "transform, opacity, max-height, padding";
         taskItem.style.display = "block";
         const taskItemHeight = `${taskItem.offsetHeight}px`;
-        taskItem.style.setProperty("--taskHeight", taskItemHeight);
+        taskItem.style.setProperty("--elHeight", taskItemHeight);
         taskItem.classList.add("appearing-with-delay");
         function removeTaskItemAppearingClass(e = e) {
           if (e.animationName === "transitioningMarginBottom") return;
@@ -993,6 +985,14 @@ export function addTaskBoxEventListeners() {
     taskBoxContainer.addEventListener("resetTaskbox", updateTaskBox, false);
     taskBoxContainer.dispatchEvent(resetTaskbox);
   })();
+
+  const initializeSelectedProjectSectionDropdown = (() => {
+    const selectProjectSectionDropdown = taskBoxContainer.querySelector(
+      ".select-project-section-dropdown-content ul"
+    );
+    loadAllProjectsSectionsDropdownElements(selectProjectSectionDropdown);
+    initializeSelectProjectSectionDropdown(taskBoxContainer);
+  })();
 }
 
 document.addEventListener("click", (event) => {
@@ -1045,11 +1045,6 @@ document.addEventListener("click", (event) => {
       `[data-project="${projectIndex}"] [data-section="${sectionIndex}"] [data-task-index="${taskIndex}"]`
     );
 
-    // taskElement.style.setProperty(
-    //   "--taskHeight",
-    //   `${taskElement.offsetHeight}px`
-    // );
-
     const oldPriority = task.priority;
 
     let todayID = "";
@@ -1087,18 +1082,6 @@ document.addEventListener("click", (event) => {
       `.priority-item[data-priority="${oldPriority}"]`
     );
     selectPriorityButton.click();
-
-    const initializeSelectedProjectSectionDropdown = (() => {
-      const selectProjectSectionDropdown = editTaskContainer.querySelector(
-        ".select-project-section-dropdown-content ul"
-      );
-      loadAllProjectsSectionsDropdownElements(selectProjectSectionDropdown);
-      initializeSelectProjectSectionDropdown(
-        editTaskContainer,
-        projectIndex,
-        sectionIndex
-      );
-    })();
 
     const selectedSectionButton = document.querySelector(
       ".edit-task-box-container .selected-project-section"
@@ -1288,7 +1271,7 @@ document.addEventListener("click", (event) => {
       editedTaskElement.style.willChange =
         "transform, opacity, max-height, padding";
       editedTaskElement.style.setProperty(
-        "--taskHeight",
+        "--elHeight",
         `${editedTaskElement.offsetHeight}px`
       );
       editedTaskElement.classList.add("appearing");
@@ -1767,7 +1750,7 @@ document.addEventListener("click", (event) => {
           `[data-task-index="${index}"]`
         );
         DOMTaskElement.style.setProperty(
-          "--taskHeight",
+          "--elHeight",
           `${DOMTaskElement.offsetHeight}px`
         );
         resetAnimation(addTaskContainer);
