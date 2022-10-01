@@ -7,12 +7,11 @@
     <meta name="theme-color" content="#db4c3f">
     <title>To do</title>
     <link type="text/css" href="OverlayScrollbars.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="mobilestyle.css" id="mobile-stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@340;400;420;450;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@340;400;420;450;500;600;700;800&display=swap" rel="stylesheet">
 
     <script src="main.js" defer></script>
 </head>
@@ -44,9 +43,7 @@
 
         <div class="nav-right">
             <button type="button" aria-label="Sidebar Button" class="nav-button open" id="menu-button">
-                <svg viewBox="0 0 24 24" class="close_icon" width="24" height="24"><path fill="white" fill-rule="nonzero" d="M5.146 5.146a.5.5 0 0 1 .708 0L12 11.293l6.146-6.147a.5.5 0 0 1 .638-.057l.07.057a.5.5 0 0 1 0 .708L12.707 12l6.147 6.146a.5.5 0 0 1 .057.638l-.057.07a.5.5 0 0 1-.708 0L12 12.707l-6.146 6.147a.5.5 0 0 1-.638.057l-.07-.057a.5.5 0 0 1 0-.708L11.293 12 5.146 5.854a.5.5 0 0 1-.057-.638z"></path></svg>
-    
-                <svg class="menu_icon" width="24" height="24" viewBox="0 0 24 24"><path fill="white" fill-rule="evenodd" d="M4.5 5h15a.5.5 0 1 1 0 1h-15a.5.5 0 0 1 0-1zm0 6h15a.5.5 0 1 1 0 1h-15a.5.5 0 1 1 0-1zm0 6h15a.5.5 0 1 1 0 1h-15a.5.5 0 1 1 0-1z"></path></svg>
+                <span class="menu_icon"><span class="">toggle</span></span>
             </button>
 
             <button type="button" class="quick-add mobile" data-modal-target=".add-task-box-container.main">
@@ -54,7 +51,14 @@
             </button>
     
             <button type="button" aria-label="Go to home" class="nav-button" id="home-button">
-                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M12.527 3.075c.35.104.64.263 1.27.876L19.1 9.123c.374.364.49.505.601.678.11.174.185.351.232.552.042.178.062.34.066.742L20 17.718c0 .446-.046.607-.134.77a.906.906 0 01-.378.378c-.163.088-.324.134-.77.134H14v-4.718c0-.446-.046-.607-.134-.77a.906.906 0 00-.378-.378c-.142-.077-.284-.122-.616-.132L12.718 13h-1.436c-.446 0-.607.046-.77.134a.906.906 0 00-.378.378c-.077.142-.122.284-.132.616l-.002.154V19H5.282c-.446 0-.607-.046-.77-.134a.906.906 0 01-.378-.378c-.088-.163-.134-.324-.134-.77v-6.462c0-.522.02-.703.067-.903.047-.2.121-.378.232-.552l.077-.113c.098-.134.233-.282.524-.565l5.304-5.172c.629-.613.92-.772 1.269-.876a1.82 1.82 0 011.054 0zm-.286.958a.825.825 0 00-.482 0c-.18.054-.326.139-.63.418l-.227.216L5.598 9.84c-.3.293-.385.39-.456.5a.76.76 0 00-.102.242c-.026.112-.037.224-.04.531l.002 6.807.005.073.074.006L8.999 18 9 14.268l.003-.17c.013-.448.083-.749.249-1.058a1.9 1.9 0 01.788-.788c.306-.164.6-.234 1.043-.249l.199-.003h1.45l.17.003c.448.013.749.083 1.058.249.337.18.608.45.788.788.164.306.234.6.249 1.043l.003.199L14.999 18l3.92-.002.073-.006.006-.073.002-.2v-6.615l-.005-.218a1.494 1.494 0 00-.035-.305.747.747 0 00-.102-.242l-.059-.084a3.571 3.571 0 00-.294-.315l-5.407-5.273c-.425-.414-.604-.545-.798-.615l-.06-.019z"></path></svg>
+                <svg class="group-hover:drop-shadow-[0px_0px_3px_rgba(255,_255,_255,_65%)] transition-colors ease-in-out" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="460.298px" height="460.297px" viewBox="0 0 460.298 460.297" style="enable-background:new 0 0 460.298 460.297; width: 21px; height: 21px; fill: white; transform: translateY(-1px);" xml:space="preserve">
+                    <g>
+                        <g>
+                            <path d="M230.149,120.939L65.986,256.274c0,0.191-0.048,0.472-0.144,0.855c-0.094,0.38-0.144,0.656-0.144,0.852v137.041    c0,4.948,1.809,9.236,5.426,12.847c3.616,3.613,7.898,5.431,12.847,5.431h109.63V303.664h73.097v109.64h109.629    c4.948,0,9.236-1.814,12.847-5.435c3.617-3.607,5.432-7.898,5.432-12.847V257.981c0-0.76-0.104-1.334-0.288-1.707L230.149,120.939    z"/>
+                            <path d="M457.122,225.438L394.6,173.476V56.989c0-2.663-0.856-4.853-2.574-6.567c-1.704-1.712-3.894-2.568-6.563-2.568h-54.816    c-2.666,0-4.855,0.856-6.57,2.568c-1.711,1.714-2.566,3.905-2.566,6.567v55.673l-69.662-58.245    c-6.084-4.949-13.318-7.423-21.694-7.423c-8.375,0-15.608,2.474-21.698,7.423L3.172,225.438c-1.903,1.52-2.946,3.566-3.14,6.136    c-0.193,2.568,0.472,4.811,1.997,6.713l17.701,21.128c1.525,1.712,3.521,2.759,5.996,3.142c2.285,0.192,4.57-0.476,6.855-1.998    L230.149,95.817l197.57,164.741c1.526,1.328,3.521,1.991,5.996,1.991h0.858c2.471-0.376,4.463-1.43,5.996-3.138l17.703-21.125    c1.522-1.906,2.189-4.145,1.991-6.716C460.068,229.007,459.021,226.961,457.122,225.438z"/>
+                        </g>
+                    </g>
+               </svg>
             </button>
         </div>
 
@@ -118,25 +122,28 @@
 
                 <li class="main-filters-item sidebar-item" data-project="0">
                     <span class="item-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24"><g fill="#246fe0" fill-rule="nonzero"><path d="M10 14.5a2 2 0 104 0h5.5V18a1.5 1.5 0 01-1.5 1.5H6A1.5 1.5 0 014.5 18v-3.5H10z" opacity="0.1"></path><path d="M8.062 4h7.876a2 2 0 011.94 1.515l2.062 8.246a2 2 0 01.06.485V18a2 2 0 01-2 2H6a2 2 0 01-2-2v-3.754a2 2 0 01.06-.485l2.06-8.246A2 2 0 018.061 4zm0 1a1 1 0 00-.97.757L5.03 14.004a1 1 0 00-.03.242V18a1 1 0 001 1h12a1 1 0 001-1v-3.754a1 1 0 00-.03-.242l-2.06-8.247A1 1 0 0015.94 5H8.061zM12 17.25A2.75 2.75 0 019.295 15H7a.5.5 0 110-1h2.75a.5.5 0 01.5.5 1.75 1.75 0 003.5 0 .5.5 0 01.5-.5H17a.5.5 0 110 1h-2.295A2.75 2.75 0 0112 17.25z"></path></g></svg>
+                        <svg class="feather feather-inbox" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; transform: scaleY(1.16); color: #157EFB;"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
                     </span>
     
     
                     <span class="item-content">
                         Inbox
-                        <span class='item-number'>1</span>
+                        <span class='item-number'></span>
                     </span>
                 </li>
     
                 <li class="main-filters-item sidebar-item selected" data-project="today">
                     <span class="item-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24"><g fill="#058527" fill-rule="evenodd"><path fill-rule="nonzero" d="M6 4.5h12A1.5 1.5 0 0 1 19.5 6v2.5h-15V6A1.5 1.5 0 0 1 6 4.5z" opacity=".1"></path><path fill-rule="nonzero" d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H6zm1 3h10a.5.5 0 1 1 0 1H7a.5.5 0 0 1 0-1z"></path><text font-family="-apple-system, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'" font-size="9" transform="translate(4 2)" font-weight="500"><tspan x="8" y="15" text-anchor="middle"></tspan></text></g></svg>
+                        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" width="20px" style="color: #058527">
+                            <path d="M 416.827 437.484 L 84.205 437.484 L 84.205 176.137 L 416.827 176.137 M 345.551 9.828 L 345.551 57.344 L 155.482 57.344 L 155.482 9.828 L 107.965 9.828 L 107.965 57.344 L 84.205 57.344 C 57.835 57.344 36.689 78.489 36.689 104.862 L 36.689 437.484 C 36.689 463.711 57.977 485 84.205 485 L 416.827 485 C 443.082 485 464.344 463.711 464.344 437.484 L 464.344 104.862 C 464.344 78.489 442.963 57.344 416.827 57.344 L 393.071 57.344 L 393.071 9.828" style="fill: currentColor;"/>
+                            <text style="font-family: Arial, sans-serif; font-size: 220px; font-weight: 700; white-space: pre; fill: currentColor; transform: translate(-17px, -31px) scale(1.1)" x="123.153" y="381.591">15 </text>
+                          </svg>
                     </span>
     
     
                     <span class="item-content">
                         Today
-                        <span class='item-number'>1</span>
+                        <span class='item-number'></span>
                     </span>
                 </li>
             </ul>
@@ -202,7 +209,120 @@
 
                         <div class="empty-state active">
                             <div class="empty-state-content">
-                           <svg data-svgs-path="theme_todoist/today.svg" viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linecap="round" stroke-miterlimit="1.5"><g transform="translate(-2550)"><g id="Today"><path fill="none" d="M1800-100h300v300h-300z" transform="matrix(.73333 0 0 .66667 1230 66.667)"></path><path d="M915.267 2305.42s-27.319-.61-36.253-16.99c-7.203-13.2.416-24.21 18.559-20.28 18.644 4.04 31.639 6.92 65.171 6.59 27.553-.26 42.636-1.73 60.016-4.27 21.08-3.07 27.76 13.06 13.19 26.54-6.86 6.34-20.21 9-28.39 10.08-3.65.48-7.32.67-10.991.56-16.971-.46-81.302-2.23-81.302-2.23z" fill="#eca19a" transform="matrix(1.04287 .01119 -.0105 .97853 1681.08 -2167.148)"></path><path d="M912.779 2306.89h-.086c-1.551.05-23.714.44-32.334-15.36-7.202-13.2-6.209-27.29 12.936-18.43 18.418 8.53 36.31 7.22 69.842 6.9 22.604-.22 37.513-2.31 51.493-4.07 3.06-.39 13.6-3.88 19.21-8.72 10.58-9.13 11.19 14.79 1.41 23.84-4.76 4.41-11.58 8.57-17.54 11.78-6.41 3.83-12.88 5.69-19.372 5.54-21.172 0-85.52-1.48-85.559-1.48z" fill="#da4c3f" stroke="#da4c3f" stroke-width="4.07" transform="matrix(.66987 .00719 -.00196 .18297 2019.66 -339.283)"></path><path d="M18088.9 1370.35c4.2 3.51 7 11.14 3.8 19.59" fill="none" stroke="#f9e4e2" stroke-width="2" transform="matrix(.93642 -.34408 .34408 .93641 -14787.857 5068.155)"></path><path d="M18074.7 1357c-.3 3.32 1.5 6.06 4.2 7.64" fill="none" stroke="#f9e4e2" stroke-width="1.45" transform="scale(1.37764) rotate(-8.599 1484.214 108364.642)"></path><path d="M18140.8 1357.88c.1 3.24-1.3 6.45-3.6 8.68" fill="none" stroke="#f9e4e2" stroke-width="1.45" transform="matrix(1.27027 .5332 -.5332 1.27027 -19622.167 -11278.543)"></path><path d="M18146.7 1302.38s-10.7.72-16.7.89c-13.7.38-22.7 1.39-38.2 1.01-5.4-.14-18.4-2.25-18.4-2.25 1.8-3.57 4.1-7.83 4.1-7.83s12.1-4.08 32-4.2c16.6-.1 27.5 2.5 32.1 3.85 1.4.43 2.6 1.47 3.1 2.81 1 2.76 2 5.72 2 5.72z" fill="#f9e4e2" transform="matrix(1.45558 .01561 -.01627 1.51674 -23676.776 -2194.968)"></path><path d="M1249.36 1583.27c3.92-2.11 14.12-3.81 22.55-4.72" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" transform="translate(1360.379 -1526.738)"></path><path d="M1248.65 1587.26c10.41-4.83 30.01-6.05 35.31-6.02" fill="none" stroke="#fff" stroke-width="2.25" stroke-linejoin="round" transform="matrix(1 0 0 .76407 1359.379 -1151.016)"></path><path d="M18095.7 1358.72h41.3" fill="none" stroke="#f9e4e2" stroke-width="1.55" transform="translate(-20650.47 -1589.458) scale(1.28693)"></path><path fill="#f9e4e2" d="M18061.6 1339.25h12.352v12.352h-12.352z" transform="matrix(.72537 0 0 .72537 -10490.277 -817.14)"></path><path d="M18066.7 1374.76c.3.67 4.3 5.24 4.3 5.24s5.7-4.66 8.4-6.38" fill="none" stroke="#da4c3f" stroke-width="1.7" stroke-linejoin="round" transform="translate(-18617.265 -1460.788) scale(1.17511)"></path><path d="M18094.9 1358.72h42.1" fill="none" stroke="#f9e4e2" stroke-width="1.55" transform="translate(-20638.67 -1573.748) scale(1.28693)"></path><path d="M18089.7 1358.72h34.9" fill="none" stroke="#f9e4e2" stroke-width="1.55" transform="translate(-20638.67 -1558.328) scale(1.28693)"></path><path fill="#f9e4e2" d="M18061.6 1339.25h12.352v12.352h-12.352z" transform="matrix(.72537 0 0 .72537 -10490.277 -785.412)"></path><path d="M18066.7 1374.76c.3.67 4.3 5.24 4.3 5.24s5.7-4.66 8.4-6.38" fill="none" stroke="#da4c3f" stroke-width="1.7" stroke-linejoin="round" transform="translate(-18617.265 -1429.058) scale(1.17511)"></path><path fill="#f9e4e2" d="M18061.6 1339.25h12.352v12.352h-12.352z" transform="matrix(.72537 0 0 .72537 -10478.517 -801.109)"></path><path d="M18066.7 1374.76c.3.67 4.3 5.24 4.3 5.24s5.7-4.66 8.4-6.38" fill="none" stroke="#da4c3f" stroke-width="1.7" stroke-linejoin="round" transform="translate(-18605.165 -1444.338) scale(1.17511)"></path><g transform="matrix(1.50864 .01618 -.0117 1.09111 -24645.579 -1633.638)"><path d="M18132.6 1304.57c-16.5.9-33.5 1.29-51.4.04-1.7 5.44-1.1 11.67 1.5 16.34s6.8 7.05 11 6.24c1.5-.27 2.4-.45 2.4-.45s1.1 3.49 2.6 8.26c1.7 5.2 5.4 8.53 9.5 8.46 4.2-.07 7.8-3.53 9.4-8.79 1.3-4.45 2.1-8.1 1.7-10.39 0 0 .7.24 1.9.62 3.5 1.16 7.2-.36 9.7-3.98 2.4-3.62 3.3-8.8 2.3-13.58-.3-1.7-.6-2.77-.6-2.77z" fill="#f9e4e2"></path><clipPath id="_clip1"><path d="M18132.6 1304.57c-16.5.9-33.5 1.29-51.4.04-1.7 5.44-1.1 11.67 1.5 16.34s6.8 7.05 11 6.24c1.5-.27 2.4-.45 2.4-.45s1.1 3.49 2.6 8.26c1.7 5.2 5.4 8.53 9.5 8.46 4.2-.07 7.8-3.53 9.4-8.79 1.3-4.45 2.1-8.1 1.7-10.39 0 0 .7.24 1.9.62 3.5 1.16 7.2-.36 9.7-3.98 2.4-3.62 3.3-8.8 2.3-13.58-.3-1.7-.6-2.77-.6-2.77z"></path></clipPath><g clip-path="url(#_clip1)"><path fill="#fff" d="M18109 1337h9v9h-9z" transform="matrix(.99407 .79355 -.57393 1.37447 855.134 -14912.1)"></path></g></g><circle cx="18111.6" cy="1337.31" r="6.172" fill="#eca19a" transform="matrix(1.37756 .01478 -.01478 1.37756 -22261.173 -2025.468)"></circle><path fill="none" stroke="#eca19a" stroke-width="1.15" stroke-linejoin="round" d="M18109 1337h9v9h-9z" transform="matrix(1.21136 1.23763 -1.23763 1.21136 -17639.163 -23925.25)"></path><path d="M18089 1352c0 2.76 2.2 5 5 5s5-2.24 5-5h-10z" fill="#da4c3f" transform="scale(2.34199 2.34198) rotate(-44.385 8008 21498.754)"></path><path d="M18102.1 1336.13c.4 6.1 4.8 10.89 11.1 10.73" fill="none" stroke="#fff" stroke-width="1.45" stroke-linejoin="round" transform="matrix(1.37756 .01478 -.01478 1.37756 -22267.573 -2018.468)"></path><path d="M18116 1367.08c4.3.15 7.6-1.26 8.8-5.61.5-1.73.2-7.27-3.1-6.11-2.4.85-1.3 4.77-.4 6.27 3 4.87 9.3 2.05 10.8-2.51" fill="none" stroke="#f9e4e2" stroke-width="1.77" transform="matrix(1.14984 -.3257 .28955 1.02221 -18573.565 4653.195)"></path><path d="M18126.6 1336.91c-1.2 5.42 2.3 12.49 8.7 13.13" fill="none" stroke="#f9e4e2" stroke-width="2.09" transform="scale(.955) rotate(-13.158 5297.85 67122.437)"></path><path d="M918.42 2265.48c3.16-8.25 9.014-23.4 11.58-27.48 4.008-6.38 13.32-13.9 25.61-3.49 5.277 4.47 11.745 3.62 15.367.37 8.39-7.54 19.77-8.66 25.352 2.12 2.444 4.72 5.871 15.53 8.611 23.93" fill="none" stroke="#da4c3f" stroke-width="1.9" stroke-linejoin="round" transform="matrix(1.1476 .01231 -.01018 .94893 1580.65 -2105.118)"></path><path d="M921.952 2305.76s-28.459-1.92-38.107-16.71c-9.328-14.3 2.411-24.24 17.472-20.22 17.435 4.66 29.685 7.49 64.601 7.16 34.922-.34 40.102-2.4 57.622-3.46 18.56-1.11 25.6 14.07 9.46 25.35-13.25 9.25-34.765 9.84-34.765 9.84" fill="none" stroke="#e57f78" stroke-width="1.79" stroke-linejoin="round" transform="matrix(1.11927 .0004 -.0004 1.11482 1584.01 -2471.499)"></path><path d="M18073.5 1340.28c-.4 4.47.9 6.7 3.9 9.66" fill="none" stroke="#e57f78" stroke-width="1.45" stroke-linejoin="round" transform="matrix(1.37756 .01478 -.01478 1.37756 -22267.573 -2018.468)"></path><path d="M18073.6 1343.52c.7 3.53 2.7 6.83 5 7.35" fill="none" stroke="#f9e4e2" stroke-width="1.44" transform="matrix(-1.60516 -.36663 -.23835 1.04353 32028.447 5364.685)"></path><path d="M21124.9 1371c-2.6.83-2.7-3.19-2.7-5.98.2-12.53 6.2-25.53 17.9-33.77 1.8-1.28 4.9-.05 2.4 1.66-12.8 8.88-18.5 23.46-16.8 36.85 0 0 .1.83-.8 1.24z" fill="#e57f78" fill-rule="nonzero" transform="matrix(-.5203 -.3365 .4371 -.67584 13093.605 8132.617)"></path><path d="M21078.5 1361.13c0-2.28.6-4.13 1.4-4.13.8 0 1.4 1.85 1.4 4.13 1.6-1.61 3.4-2.48 3.9-1.93.5.54-.3 2.29-1.9 3.9 2.3 0 4.1.63 4.1 1.4 0 .77-1.8 1.4-4.1 1.4 1.6 1.61 2.4 3.36 1.9 3.9-.5.55-2.3-.32-3.9-1.93 0 2.28-.6 4.13-1.4 4.13-.8 0-1.4-1.85-1.4-4.13-1.6 1.61-3.4 2.48-3.9 1.93-.5-.54.3-2.29 1.9-3.9-2.2 0-4.1-.63-4.1-1.4 0-.77 1.9-1.4 4.1-1.4-1.6-1.61-2.4-3.36-1.9-3.9.5-.55 2.3.32 3.9 1.93z" fill="#da4c3f" transform="matrix(-1.33287 .63245 -.63246 -1.33287 31633.546 -11392.843)"></path><circle cx="21134.2" cy="1315.25" r="1.75" fill="#fff" transform="matrix(-1.06182 -.68674 .68674 -1.06182 24211.53 16030.57)"></circle></g></g></svg>
+                                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                                    <g transform="matrix(0.244175, 0, 0, 0.244175, 201.308762, 21.948919)" fill="var(--mainColor)">
+                                        <path style="fill: var(--color);" d="M235.696,81.72c0-4.487-3.633-8.129-8.129-8.129c-46.926,0-85.106,38.18-85.106,85.106   c0,4.487,3.633,8.129,8.129,8.129c4.495,0,8.129-3.642,8.129-8.129c0-37.96,30.889-68.849,68.849-68.849   C232.063,89.848,235.696,86.215,235.696,81.72z">
+                                        </path>
+                                        <path style="fill: var(--color);" d="M108.305,158.697c0,27.897,9.015,54.274,26.076,76.279c0.081,0.106,0.171,0.211,0.26,0.317   c35.579,49.389,26.735,72.881,26.735,72.921c-1.902,4.064-0.146,8.901,3.918,10.811c1.114,0.52,2.284,0.772,3.438,0.764   c3.056,0,5.983-1.731,7.364-4.682c1.471-3.121,13.095-32.214-28.694-89.91c-0.187-0.252-0.374-0.496-0.585-0.723   c-14.558-19.021-22.248-41.748-22.248-65.785c0-59.729,48.601-108.321,108.321-108.321S341.213,98.96,341.213,158.689   c0,24.101-7.738,46.918-22.524,66.15c-41.813,57.737-29.718,87.163-28.206,90.333c1.91,3.975,6.6,5.601,10.616,3.804   s5.836-6.576,4.137-10.64c-0.098-0.236-9.413-24.199,26.483-73.775c16.842-21.915,25.751-48.146,25.751-75.864   c0-68.695-55.884-124.579-124.579-124.579S108.305,90.011,108.305,158.697z">
+                                        </path>
+                                        <path style="fill: var(--color);" d="M305.439,351.084v-6.909c0-11.014-8.966-19.972-19.972-19.972H175.927   c-11.014,0-19.972,8.958-19.972,19.972v6.909c0,11.006,8.958,19.972,19.972,19.972h109.549   C296.482,371.056,305.439,362.098,305.439,351.084z M172.212,351.084v-6.909c0-2.048,1.666-3.715,3.715-3.715h109.549   c2.048,0,3.715,1.666,3.715,3.715v6.909c0,2.048-1.666,3.715-3.715,3.715H175.927C173.878,354.799,172.212,353.133,172.212,351.084   z">
+                                        </path>
+                                        <path style="fill: var(--color);" d="M189.087,383.412c-4.495,0-8.129,3.642-8.129,8.129v21.468c0,3.186,1.861,6.072,4.755,7.397   l43.805,19.988c1.073,0.488,2.219,0.732,3.373,0.732c1.187,0,2.374-0.26,3.471-0.78l43.927-20.728   c2.845-1.341,4.658-4.202,4.658-7.348v-20.72c0-4.487-3.633-8.129-8.129-8.129s-8.129,3.642-8.129,8.129v15.574l-35.855,16.924   l-35.619-16.257v-16.241C197.215,387.045,193.582,383.412,189.087,383.412z">
+                                        </path>
+                                        <path style="fill: var(--color);" d="M422.263,305.581c2.666-3.609,1.894-8.698-1.715-11.364l-55.144-40.659   c-3.617-2.666-8.698-1.902-11.364,1.715c-2.666,3.609-1.894,8.698,1.715,11.364l55.144,40.659c1.455,1.073,3.146,1.585,4.82,1.585   C418.207,308.889,420.67,307.743,422.263,305.581z">
+                                        </path>
+                                        <path style="fill: var(--color);" d="M99.16,77.468c1.455,1.073,3.146,1.585,4.82,1.585c2.495,0,4.95-1.146,6.552-3.308   c2.666-3.609,1.894-8.698-1.715-11.364l-56.388-41.57c-3.609-2.674-8.698-1.894-11.364,1.715   c-2.666,3.617-1.902,8.706,1.715,11.372L99.16,77.468z">
+                                        </path>
+                                        <path style="fill: var(--color);" d="M101.721,250.761l-58.932,43.455c-3.609,2.666-4.381,7.755-1.715,11.364   c1.593,2.162,4.056,3.308,6.552,3.308c1.674,0,3.365-0.512,4.82-1.585l58.932-43.455c3.609-2.666,4.381-7.755,1.715-11.364   C110.41,248.867,105.33,248.103,101.721,250.761z">
+                                        </path>
+                                        <path style="fill: var(--color);" d="M358.161,61.699c-3.609,2.666-4.381,7.755-1.715,11.364c1.593,2.162,4.056,3.308,6.552,3.308   c1.674,0,3.365-0.52,4.82-1.585l52.746-38.887c3.609-2.666,4.381-7.755,1.715-11.364c-2.666-3.609-7.747-4.389-11.364-1.715   L358.161,61.699z">
+                                        </path>
+                                        <path style="fill: var(--color);" d="M454.217,156.933h-62.175c-4.495,0-8.129,3.642-8.129,8.129s3.633,8.129,8.129,8.129h62.175   c4.495,0,8.129-3.642,8.129-8.129S458.712,156.933,454.217,156.933z">
+                                        </path>
+                                        <path style="fill: var(--color);" d="M80.416,165.062c0-4.487-3.633-8.129-8.129-8.129H8.129c-4.495,0-8.129,3.642-8.129,8.129   s3.633,8.129,8.129,8.129h64.159C76.774,173.19,80.416,169.549,80.416,165.062z">
+                                        </path>
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, 52.586131, 8.790475)">
+                                    </g>
+                                    <path d="M 339.757 97.529 C 339.757 97.529 274.336 180.402 169.657 130.97 C 64.977 81.538 -39.705 215.293 50.443 296.708 C 140.57 378.126 52.367 422.863 113.611 472.758 C 183.208 529.472 243.796 414.471 299.044 440.642 C 420.98 498.399 511.31 475.535 490.965 408.657 C 455.225 291.261 409.538 283.627 444.438 222.562 C 479.317 161.501 402.312 34.537 339.757 97.529 Z" fill="var(--lightestColor)">
+                                    </path>
+                                    <path d="M 253.95 274.664 L 253.95 448.528 L 118.955 390.222 L 119.61 216.989 L 253.95 274.664 Z" fill="var(--lightColor)">
+                                    </path>
+                                    <path d="M 253.95 274.769 L 253.95 448.632 L 388.289 392.339 L 388.289 217.543 L 253.95 274.769 Z" fill="var(--veryLightColor)">
+                                    </path>
+                                    <path d="M 253.95 274.664 L 388.945 218.124 L 255.014 158.759 L 118.955 216.712 L 253.95 274.664 Z" fill="var(--mainColor)" style="--g:clamp(0, 10vw, 100px) clamp(0, 10vw, 100px) clamp(0, 10vw, 100px);">
+                                    </path>
+                                    <path d="M 82.088 247.726 L 217.944 313.667 C 218.311 313.843 218.722 313.897 219.132 313.816 C 219.521 313.734 219.889 313.525 220.155 313.22 L 253.95 274.664 L 118.955 216.712 L 81.801 244.578 C 81.537 244.769 81.331 245.021 81.209 245.312 C 81.085 245.603 81.025 245.922 81.065 246.237 C 81.085 246.555 81.209 246.856 81.394 247.118 C 81.578 247.376 81.801 247.588 82.088 247.726 Z" fill="var(--intermediateColor)">
+                                    </path>
+                                    <path d="M 388.945 218.124 L 426.424 252.02 C 426.649 252.225 426.834 252.487 426.936 252.778 C 427.038 253.07 427.059 253.381 427.018 253.685 C 426.977 253.989 426.854 254.278 426.649 254.521 C 426.465 254.766 426.22 254.961 425.953 255.086 L 291.777 314.968 C 291.409 315.129 291.02 315.169 290.63 315.087 C 290.241 315.005 289.894 314.806 289.627 314.512 L 253.95 274.664 L 388.945 218.124 Z" fill="var(--intermediateColor)">
+                                    </path>
+                                    <path d="M 255.014 158.759 L 389.314 218.124 L 408.637 213.648 C 409.006 213.56 409.353 213.355 409.618 213.06 C 409.865 212.767 410.028 212.399 410.048 212.01 C 410.089 211.623 410.008 211.234 409.803 210.899 C 409.598 210.564 409.312 210.298 408.944 210.143 L 286.31 157.004 C 286.046 156.89 285.759 156.838 285.451 156.857 L 255.014 158.759 Z" fill="var(--intermediateColor)">
+                                    </path>
+                                    <path d="M 255.014 158.759 L 121.451 216.989 L 104.585 214.151 C 104.176 214.077 103.827 213.882 103.562 213.591 C 103.295 213.297 103.11 212.927 103.07 212.533 C 103.028 212.136 103.11 211.738 103.315 211.394 C 103.52 211.053 103.827 210.781 104.196 210.625 L 229.857 156.468 C 230.145 156.349 230.43 156.302 230.737 156.327 L 255.014 158.759 Z" fill="var(--intermediateColor)">
+                                    </path>
+                                    <path d="M 394.205 421.522 C 412.628 421.522 427.55 406.595 427.55 388.179 C 427.55 369.765 412.628 354.837 394.205 354.837 C 375.783 354.837 360.862 369.765 360.862 388.179 C 360.862 406.595 375.783 421.522 394.205 421.522 Z" fill="var(--mainColor)" stroke="white" stroke-width="15" stroke-miterlimit="10">
+                                    </path>
+                                    <path d="M 404.808 378.296 C 404.256 376.383 403.478 374.828 402.495 373.642 C 401.533 372.485 400.285 371.597 398.872 371.068 C 395.842 370.019 392.548 370.019 389.517 371.068 C 388.106 371.593 386.876 372.482 385.915 373.642 C 384.912 374.828 384.135 376.383 383.604 378.296 C 383.07 380.213 382.805 382.553 382.805 385.309 L 382.805 390.926 C 382.805 393.681 383.07 396.024 383.623 397.952 C 384.053 399.665 384.852 401.265 385.957 402.647 C 386.898 403.816 388.146 404.718 389.559 405.265 C 392.567 406.348 395.884 406.348 398.894 405.265 C 400.305 404.718 401.533 403.816 402.475 402.647 C 403.56 401.259 404.338 399.659 404.768 397.952 C 405.32 396.024 405.587 393.681 405.587 390.926 L 405.627 390.926 L 405.627 385.309 C 405.607 382.553 405.34 380.213 404.808 378.296 Z M 399.773 391.765 C 399.794 393.267 399.671 394.765 399.426 396.243 C 399.242 397.295 398.894 398.306 398.36 399.231 C 397.952 399.945 397.357 400.529 396.621 400.912 C 395.884 401.273 395.066 401.449 394.226 401.436 C 393.408 401.448 392.567 401.267 391.831 400.912 C 391.094 400.527 390.48 399.945 390.05 399.231 C 389.517 398.308 389.149 397.296 388.945 396.243 C 388.678 394.768 388.535 393.268 388.556 391.765 L 388.556 384.411 C 388.535 382.917 388.658 381.421 388.945 379.948 C 389.13 378.917 389.498 377.929 390.031 377.029 C 390.46 376.343 391.074 375.789 391.791 375.431 C 392.548 375.107 393.346 374.935 394.165 374.935 C 394.983 374.935 395.802 375.107 396.559 375.431 C 397.297 375.781 397.889 376.336 398.32 377.029 C 398.853 377.929 399.22 378.917 399.404 379.948 C 399.671 381.421 399.814 382.916 399.773 384.411 L 399.773 391.765 Z" fill="white">
+                                    </path>
+                                    <g transform="matrix(0.328225, 0, 0, 0.328225, 242.280151, 56.449619)">
+                                        <g>
+                                            <path d="M24.82,48.678c5.422,0,9.832-6.644,9.832-14.811c0-8.165-4.41-14.809-9.832-14.809s-9.833,6.644-9.833,14.809 C14.987,42.034,19.399,48.678,24.82,48.678z" style="fill: var(--mainColor);">
+                                            </path>
+                                            <path d="M71.606,48.678c5.422,0,9.833-6.644,9.833-14.811c0-8.165-4.411-14.809-9.833-14.809c-5.421,0-9.831,6.644-9.831,14.809 C61.775,42.034,66.186,48.678,71.606,48.678z" style="fill: var(--mainColor);">
+                                            </path>
+                                            <path d="M95.855,55.806c-0.6-0.605-1.516-0.77-2.285-0.4C81.232,61.29,65.125,64.53,48.214,64.53 c-16.907,0-33.015-3.24-45.354-9.123c-0.77-0.367-1.688-0.205-2.284,0.4c-0.599,0.606-0.747,1.526-0.369,2.29 c5.606,11.351,25.349,19.277,48.008,19.277c22.668,0,42.412-7.929,48.012-19.279C96.603,57.332,96.453,56.411,95.855,55.806z" style="fill: var(--mainColor);">
+                                            </path>
+                                        </g>
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                    <g transform="matrix(1, 0, 0, 1, -29.055388, 66.544749)">
+                                    </g>
+                                </svg>
                             <div class="empty-state-header">What tasks are on your mind?
                             </div>
                             </div>
@@ -238,82 +358,82 @@
                         <div class="project-color-dropdown-content">
                             <h2 class="project-color-header mobile">Color</h2>
                             <ul role="listbox" class="project-color-dropdown-listbox">
-                                <li class="project-color-item"><span class='circle berry-red'></span>
+                                <li class="project-color-item" data-color="berry-red"><span class='circle'></span>
                                 <span class="project-color-name-item">Berry Red</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle red'></span>
+                                <li class="project-color-item" data-color="red"><span class='circle'></span>
                                 <span class="project-color-name-item">Red</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle orange'></span>
+                                <li class="project-color-item" data-color="orange"><span class='circle'></span>
                                 <span class="project-color-name-item">Orange</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle yellow'></span>
+                                <li class="project-color-item" data-color="yellow"><span class='circle'></span>
                                 <span class="project-color-name-item">Yellow</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle olive-green'></span>
+                                <li class="project-color-item" data-color="olive-green"><span class='circle'></span>
                                 <span class="project-color-name-item">Olive Green</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle lime-green'></span>
+                                <li class="project-color-item" data-color="lime-green"><span class='circle'></span>
                                 <span class="project-color-name-item">Lime Green</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle green'></span>
+                                <li class="project-color-item" data-color="green"><span class='circle'></span>
                                 <span class="project-color-name-item">Green</span>
                                 </li>
         
-                                <li class="project-color-item"><span class='circle mint-green'></span>
+                                <li class="project-color-item" data-color="mint-green"><span class='circle'></span>
                                 <span class="project-color-name-item">Mint Green</span>
                                 </li>
         
-                                <li class="project-color-item"><span class='circle teal'></span>
+                                <li class="project-color-item" data-color="teal"><span class='circle'></span>
                                 <span class="project-color-name-item">Teal</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle sky-blue'></span>
+                                <li class="project-color-item" data-color="sky-blue"><span class='circle'></span>
                                 <span class="project-color-name-item">Sky Blue</span>
 
-                                <li class="project-color-item"><span class='circle light-blue'></span>
+                                <li class="project-color-item" data-color="light-blue"><span class='circle'></span>
                                 <span class="project-color-name-item">Light Blue</span>
                                 </li>
             
-                                <li class="project-color-item"><span class='circle blue'></span>
+                                <li class="project-color-item" data-color="blue"><span class='circle'></span>
                                 <span class="project-color-name-item">Blue</span>
                                 </li>
         
-                                <li class="project-color-item"><span class='circle grape'></span>
+                                <li class="project-color-item" data-color="grape"><span class='circle'></span>
                                 <span class="project-color-name-item">Grape</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle violet'></span>
+                                <li class="project-color-item" data-color="violet"><span class='circle'></span>
                                 <span class="project-color-name-item">Violet</span>
                                 </li>
                 
-                                <li class="project-color-item"><span class='circle lavender'></span>
+                                <li class="project-color-item" data-color="lavender"><span class='circle'></span>
                                 <span class="project-color-name-item">Lavender</span>
                                 </li>
             
-                                <li class="project-color-item"><span class='circle magenta'></span>
+                                <li class="project-color-item" data-color="magenta"><span class='circle'></span>
                                 <span class="project-color-name-item">Magenta</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle salmon'></span>
+                                <li class="project-color-item" data-color="salmon"><span class='circle'></span>
                                 <span class="project-color-name-item">Salmon</span>
                                 </li>
         
-                                <li class="project-color-item selected"><span class='circle charcoal'></span>
+                                <li class="project-color-item selected" data-color="charcoal"><span class='circle'></span>
                                 <span class="project-color-name-item">Charcoal</span>
                                 </li>
                     
-                                <li class="project-color-item"><span class='circle gray'></span>
+                                <li class="project-color-item" data-color="gray"><span class='circle'></span>
                                 <span class="project-color-name-item">Grey</span>
                                 </li>
                 
-                                <li class="project-color-item"><span class='circle taupe'></span>
+                                <li class="project-color-item" data-color="taupe"><span class='circle'></span>
                                 <span class="project-color-name-item">Taupe</span>
                                 </li>
                             </ul>
@@ -357,82 +477,82 @@
                         <div class="project-color-dropdown-content">
                             <h2 class="project-color-header mobile">Color</h2>
                             <ul role="listbox" class="project-color-dropdown-listbox">
-                                <li class="project-color-item"><span class='circle berry-red'></span>
+                                <li class="project-color-item" data-color="berry-red"><span class='circle'></span>
                                 <span class="project-color-name-item">Berry Red</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle red'></span>
+                                <li class="project-color-item" data-color="red"><span class='circle'></span>
                                 <span class="project-color-name-item">Red</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle orange'></span>
+                                <li class="project-color-item" data-color="orange"><span class='circle'></span>
                                 <span class="project-color-name-item">Orange</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle yellow'></span>
+                                <li class="project-color-item" data-color="yellow"><span class='circle'></span>
                                 <span class="project-color-name-item">Yellow</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle olive-green'></span>
+                                <li class="project-color-item" data-color="olive-green"><span class='circle'></span>
                                 <span class="project-color-name-item">Olive Green</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle lime-green'></span>
+                                <li class="project-color-item" data-color="lime-green"><span class='circle'></span>
                                 <span class="project-color-name-item">Lime Green</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle green'></span>
+                                <li class="project-color-item" data-color="green"><span class='circle'></span>
                                 <span class="project-color-name-item">Green</span>
                                 </li>
         
-                                <li class="project-color-item"><span class='circle mint-green'></span>
+                                <li class="project-color-item" data-color="mint-green"><span class='circle'></span>
                                 <span class="project-color-name-item">Mint Green</span>
                                 </li>
         
-                                <li class="project-color-item"><span class='circle teal'></span>
+                                <li class="project-color-item" data-color="teal"><span class='circle'></span>
                                 <span class="project-color-name-item">Teal</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle sky-blue'></span>
+                                <li class="project-color-item" data-color="sky-blue"><span class='circle'></span>
                                 <span class="project-color-name-item">Sky Blue</span>
 
-                                <li class="project-color-item"><span class='circle light-blue'></span>
+                                <li class="project-color-item" data-color="light-blue"><span class='circle'></span>
                                 <span class="project-color-name-item">Light Blue</span>
                                 </li>
             
-                                <li class="project-color-item"><span class='circle blue'></span>
+                                <li class="project-color-item" data-color="blue"><span class='circle'></span>
                                 <span class="project-color-name-item">Blue</span>
                                 </li>
         
-                                <li class="project-color-item"><span class='circle grape'></span>
+                                <li class="project-color-item" data-color="grape"><span class='circle'></span>
                                 <span class="project-color-name-item">Grape</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle violet'></span>
+                                <li class="project-color-item" data-color="violet"><span class='circle'></span>
                                 <span class="project-color-name-item">Violet</span>
                                 </li>
                 
-                                <li class="project-color-item"><span class='circle lavender'></span>
+                                <li class="project-color-item" data-color="lavender"><span class='circle'></span>
                                 <span class="project-color-name-item">Lavender</span>
                                 </li>
             
-                                <li class="project-color-item"><span class='circle magenta'></span>
+                                <li class="project-color-item" data-color="magenta"><span class='circle'></span>
                                 <span class="project-color-name-item">Magenta</span>
                                 </li>
 
-                                <li class="project-color-item"><span class='circle salmon'></span>
+                                <li class="project-color-item" data-color="salmon"><span class='circle'></span>
                                 <span class="project-color-name-item">Salmon</span>
                                 </li>
         
-                                <li class="project-color-item selected"><span class='circle charcoal'></span>
+                                <li class="project-color-item selected" data-color="charcoal"><span class='circle'></span>
                                 <span class="project-color-name-item">Charcoal</span>
                                 </li>
                     
-                                <li class="project-color-item"><span class='circle gray'></span>
+                                <li class="project-color-item" data-color="gray"><span class='circle'></span>
                                 <span class="project-color-name-item">Grey</span>
                                 </li>
                 
-                                <li class="project-color-item"><span class='circle taupe'></span>
+                                <li class="project-color-item" data-color="taupe"><span class='circle'></span>
                                 <span class="project-color-name-item">Taupe</span>
                                 </li>
                             </ul>
@@ -487,9 +607,8 @@
                                     <ul>
                                         
                                     </ul>
-                                    
+                                    <div class="arrow"></div>   
                                   </div>
-                                  <div class="arrow"></div>   
                             </div> 
                         </div>
         
@@ -682,6 +801,3 @@
     <div id="dropdown-overlay"></div>
 </body>
 </html>
-
-
-
